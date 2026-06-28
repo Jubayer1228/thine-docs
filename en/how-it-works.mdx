@@ -1,0 +1,28 @@
+---
+title: How Thine Code works
+description: The agentic loop, built-in tools, and how Thine Code interacts with your project.
+---
+
+Thine Code uses the same **agentic loop** as Claude Code. See the upstream guide for full detail: [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works).
+
+## Agent loop (summary)
+
+1. **User prompt** enters the session (REPL, `-p`, or SDK `query()`)
+2. **System prompt** combines defaults, `CLAUDE.md`, skills context, and tool definitions
+3. **Model** returns text and/or tool calls
+4. **Tools** execute (Read, Edit, Bash, MCP, Agent, …) and results feed back
+5. Loop continues until the model stops or limits hit (`--max-turns`, budget, `/goal` satisfied)
+
+## Universal LLM layer
+
+For Thine, API calls go through `services/api/universalLlm/` which translates between Anthropic Messages format and provider APIs (Gemini native, OpenAI chat completions, etc.).
+
+## Context window
+
+Long sessions **compact** automatically. Use `/compact` manually or `/rewind` to restore earlier file state.
+
+## Next steps
+
+- [Providers](/en/providers)
+- [Permission modes](/en/permission-modes)
+- [Prompt caching](/en/prompt-caching)

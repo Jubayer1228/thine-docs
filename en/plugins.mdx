@@ -1,0 +1,34 @@
+---
+title: Plugins
+description: Discover, install, and load plugins to extend Thine Code.
+---
+
+Plugins bundle skills, agents, hooks, MCP servers, and LSP configs.
+
+Upstream: [Discover and install plugins](https://code.claude.com/docs/en/discover-plugins).
+
+## Session-only plugins
+
+```bash
+# Directory
+thine --plugin-dir ./my-plugin
+
+# Zip archive
+thine --plugin-dir ./my-plugin.zip
+
+# From URL
+thine --plugin-url https://example.com/my-plugin.zip
+```
+
+## Manage installed plugins
+
+```bash
+thine plugin list
+thine plugin install name@marketplace
+```
+
+In-session: `/plugin`
+
+## Create plugins
+
+See upstream [Create plugins](https://code.claude.com/docs/en/plugins) and the `plugin-dev` skill in the main repo.

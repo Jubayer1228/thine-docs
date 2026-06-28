@@ -1,0 +1,71 @@
+---
+title: Agent SDK quickstart
+description: Run your first programmatic agent with query() and a universal LLM provider.
+---
+
+## 1. Environment
+
+```bash
+export CLAUDE_CODE_USE_GEMINI=1
+export GEMINI_API_KEY=your-key
+export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
+```
+
+## 2. TypeScript script
+
+```typescript
+import { query } from '../sdk/index.js'
+
+async function main() {
+  for await (const msg of query({
+    prompt: 'List files in the current directory and summarize the project',
+    options: {
+      cwd: process.cwd(),
+      maxTurns: 5,
+    },
+  })) {
+    if (msg.type === 'result' && msg.subtype === 'success') {
+      console.log(msg.result)
+    }
+  }
+}
+
+main().catch(console.error)
+```
+
+Run with Bun or Node (after `bun run build`):
+
+```bash
+bun run my-agent.ts
+```
+
+## 3. Print-mode equivalent
+
+The CLI `-p` flag uses the same engine:
+
+```bash
+node dist/cli.mjs -p --max-turns 5 "List files and summarize"
+```
+
+## 4. Sessions
+
+Resume a prior run:
+
+```typescript
+for await (const msg of query({
+  prompt: 'Continue where we left off',
+  options: {
+    resume: 'session-uuid-here',
+    cwd: '/path/to/repo',
+  },
+})) {
+  // ...
+}
+```
+
+See [Sessions](/en/agent-sdk/sessions).
+
+## Next steps
+
+- [Overview](/en/agent-sdk/overview)
+- [Upstream SDK docs](https://code.claude.com/docs/en/agent-sdk/quickstart)

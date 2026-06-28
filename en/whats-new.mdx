@@ -1,0 +1,58 @@
+---
+title: What's new
+description: Notable Thine Code features aligned with Claude Code weekly releases.
+---
+
+Thine Code tracks [Claude Code what's new](https://code.claude.com/docs/en/whats-new) and implements portable features for multi-provider backends. Cloud-only Anthropic features (Artifacts, Routines, cloud ultrareview fleet) are documented but not available in Thine.
+
+## Recent parity highlights
+
+### Week 26 · June 22–26, 2026
+
+- **`thine mcp login` / `logout`** — OAuth for HTTP/SSE MCP servers from the shell
+- **Shell mode** — `! npm test` runs bash and can explain output
+- **`/rewind` after `/clear`** — resume from before a clear
+- **Background subagent permissions** — prompts surface in the main session
+
+### Week 25 · June 15–19, 2026
+
+- **Tool(param:value) rules** — fine-grained allow/deny patterns
+- **`/config key=value`** — set settings from the prompt
+- **Auto mode git safety** — classifier blocks destructive git (enable `CLAUDE_CODE_TRANSCRIPT_CLASSIFIER=1`)
+
+### Week 24 · June 8–12, 2026
+
+- **`/cd`** — change working directory mid-session
+- **`--safe-mode`** — troubleshooting mode without customizations
+- **`--fallback-model`** — model fallback chain in print mode
+
+### Week 20 · May 11–15, 2026
+
+- **`/goal`** — set a completion condition; agent keeps working until it holds
+- **`thine agents`** — list and manage agent sessions
+
+### Week 19 · May 4–8, 2026
+
+- **`--plugin-url`** and **`.zip` `--plugin-dir`** — load plugins from archives
+
+## Thine-specific
+
+- **Multi-provider LLM** — Gemini, OpenAI, DeepSeek, Qwen, Kimi, GLM, Ollama ([Providers](/en/providers))
+- **API-key auth** — no Anthropic subscription required
+- **Universal prompt caching** — Gemini native + OpenAI prefix caching
+- **Agent SDK** — real `query()` with subprocess runtime
+
+## Audit status
+
+Run the parity audit in the `thine-code` repo:
+
+```bash
+cd thine-code/claude
+bun scripts/audit-whats-new.ts
+```
+
+See [Feature parity matrix](/en/whats-new/feature-parity) for the full breakdown.
+
+## Upstream changelog
+
+For Anthropic-only releases and version numbers, see the official [Claude Code changelog](https://code.claude.com/docs/en/changelog).

@@ -1,0 +1,35 @@
+---
+title: Tools reference
+description: Built-in tools available to Thine Code agents.
+---
+
+Thine Code agents use the same built-in tool set as Claude Code where compiled into your build.
+
+Upstream: [Tools reference](https://code.claude.com/docs/en/tools-reference).
+
+## Common tools
+
+| Tool | Purpose |
+| --- | --- |
+| **Read** | Read file contents |
+| **Edit** | Structured file edits |
+| **Write** | Create/overwrite files |
+| **Bash** | Run shell commands |
+| **Grep** | Search file contents |
+| **Glob** | Find files by pattern |
+| **Agent** | Spawn subagents |
+| **WebSearch** | Web search (Tavily on universal LLMs) |
+| **Skill** | Invoke slash skills |
+| **TodoWrite** | Task list tracking |
+
+## Restrict tools
+
+```bash
+thine --tools Read,Grep,Bash
+thine --disallowed-tools Edit,Write
+thine --allowed-tools "Bash(git:*)"
+```
+
+## MCP tools
+
+Tools from connected MCP servers appear alongside built-ins.

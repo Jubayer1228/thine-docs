@@ -1,0 +1,185 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "name": "Thine Code Docs",
+  "theme": "mint",
+  "colors": {
+    "primary": "#0D9488",
+    "light": "#14B8A6",
+    "dark": "#0F766E"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "GitHub",
+        "href": "https://github.com/thine-ai/thine-code"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Get started",
+      "href": "/en/quickstart"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Getting started",
+        "groups": [
+          {
+            "group": "Getting started",
+            "pages": [
+              "en/overview",
+              "en/quickstart",
+              "en/changelog",
+              "en/how-it-works"
+            ]
+          },
+          {
+            "group": "Core concepts",
+            "pages": [
+              "en/providers",
+              "en/memory",
+              "en/permission-modes",
+              "en/prompt-caching"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Build with Thine Code",
+        "groups": [
+          {
+            "group": "Agents and parallel work",
+            "pages": [
+              "en/agents",
+              "en/subagents",
+              "en/goal"
+            ]
+          },
+          {
+            "group": "MCP",
+            "pages": [
+              "en/mcp",
+              "en/mcp-quickstart"
+            ]
+          },
+          {
+            "group": "Skills and plugins",
+            "pages": [
+              "en/skills",
+              "en/plugins"
+            ]
+          },
+          {
+            "group": "Hooks",
+            "pages": [
+              "en/hooks-guide",
+              "en/hooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Configuration",
+        "groups": [
+          {
+            "group": "Settings and permissions",
+            "pages": [
+              "en/settings",
+              "en/permissions"
+            ]
+          },
+          {
+            "group": "Model and responses",
+            "pages": [
+              "en/model-config"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Reference",
+        "groups": [
+          {
+            "group": "Reference",
+            "pages": [
+              "en/cli-reference",
+              "en/env-vars",
+              "en/tools-reference"
+            ]
+          },
+          {
+            "group": "Glossary",
+            "pages": [
+              "en/glossary"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Agent SDK",
+        "groups": [
+          {
+            "group": "Agent SDK",
+            "pages": [
+              "en/agent-sdk/overview",
+              "en/agent-sdk/quickstart",
+              "en/agent-sdk/sessions"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "What's New",
+        "groups": [
+          {
+            "group": "What's new",
+            "pages": [
+              "en/whats-new",
+              "en/whats-new/feature-parity"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Resources",
+        "groups": [
+          {
+            "group": "Resources",
+            "pages": [
+              "en/troubleshooting",
+              "en/best-practices"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "Thine Code repo",
+          "href": "https://github.com/thine-ai/thine-code",
+          "icon": "github"
+        },
+        {
+          "anchor": "Claude Code docs (upstream)",
+          "href": "https://code.claude.com/docs/en/overview",
+          "icon": "book-open-cover"
+        }
+      ]
+    }
+  },
+  "footer": {
+    "socials": {
+      "github": "https://github.com/thine-ai/thine-docs"
+    }
+  },
+  "contextual": {
+    "options": ["copy", "view", "chatgpt", "claude", "cursor"]
+  }
+}

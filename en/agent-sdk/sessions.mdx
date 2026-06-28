@@ -1,0 +1,51 @@
+---
+title: SDK sessions
+description: Resume, fork, and persist agent sessions with the Thine Agent SDK.
+---
+
+Sessions let you continue work across process restarts, build multi-step pipelines, and isolate experiments with forked session IDs.
+
+## CLI equivalents
+
+| SDK option | CLI flag |
+| --- | --- |
+| `resume: sessionId` | `--resume <id>` |
+| Continue last in cwd | `--continue` / `-c` |
+| New ID on resume | `--fork-session` |
+| Fixed session UUID | `--session-id <uuid>` |
+
+## Resume in SDK
+
+```typescript
+import { query } from '../sdk/index.js'
+
+for await (const msg of query({
+  prompt: 'Fix the remaining test failures',
+  options: {
+    resume: '550e8400-e29b-41d4-a716-446655440000',
+    cwd: '/path/to/repo',
+  },
+})) {
+  // handle messages
+}
+```
+
+## Session storage
+
+Sessions are stored under your Claude/Thine config directory (typically `~/.claude/projects/`). Use `/resume` in the REPL or `thine -r` from the CLI to pick sessions interactively.
+
+## Fork
+
+Forking creates a new session ID while copying history — useful for trying alternate approaches:
+
+```bash
+thine --resume abc123 --fork-session -p "try approach B instead"
+```
+
+## Persistence
+
+Disable disk persistence in print mode when you do not want artifacts:
+
+```bash
+thine -p --no-session-persistence "one-off query"
+```

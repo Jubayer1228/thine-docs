@@ -1,0 +1,35 @@
+---
+title: Agents
+description: Manage Claude Code agent sessions with thine agents and agent view patterns.
+---
+
+## List agents
+
+```bash
+thine agents
+thine agents --json
+```
+
+Shows built-in and custom agents, active sessions, and configuration.
+
+## Agent view
+
+Upstream **agent view** (`thine agents` dashboard) manages parallel background sessions. Thine supports the CLI listing and dispatch flags where compiled in your build.
+
+See upstream: [Manage multiple agents with agent view](https://code.claude.com/docs/en/agent-view).
+
+## Custom agents
+
+Define agents via `--agents` JSON or project `.claude/agents/`:
+
+```bash
+thine --agents '{"reviewer":{"description":"Reviews PRs","prompt":"You are a code reviewer"}}'
+```
+
+## Background sessions
+
+```bash
+thine --bg "fix flaky tests in background"
+```
+
+Requires tmux where compiled (`BG_SESSIONS`).

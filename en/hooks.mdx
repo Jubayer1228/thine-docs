@@ -1,0 +1,28 @@
+---
+title: Hooks reference
+description: Hook events, configuration schema, and JSON formats for Thine Code.
+---
+
+Thine Code uses the same hooks system as Claude Code.
+
+Full upstream reference: [Hooks reference](https://code.claude.com/docs/en/hooks).
+
+## Common events
+
+| Event | When |
+| --- | --- |
+| `PreToolUse` | Before a tool runs |
+| `PostToolUse` | After a tool completes |
+| `UserPromptSubmit` | User sends a message |
+| `Stop` | Agent turn ends |
+| `SessionStart` | Session begins |
+
+## Configuration location
+
+- `.claude/settings.json` (project)
+- `~/.claude/settings.json` (user)
+- Managed settings for teams
+
+## Environment
+
+Hooks receive `CLAUDE_PROJECT_DIR`, `CLAUDE_EFFORT`, and session metadata when compiled in.

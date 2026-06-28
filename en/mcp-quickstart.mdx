@@ -1,0 +1,41 @@
+---
+title: MCP quickstart
+description: Add your first MCP server to Thine Code.
+---
+
+## 1. Create `.mcp.json`
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/allowed/dir"]
+    }
+  }
+}
+```
+
+## 2. Start Thine Code
+
+```bash
+thine
+```
+
+## 3. Verify
+
+```
+/mcp
+```
+
+You should see `filesystem` connected with tools listed.
+
+## HTTP server with OAuth
+
+Add an `http` or `sse` server to config, then:
+
+```bash
+thine mcp login my-server
+```
+
+Upstream walkthrough: [Connect to MCP servers](https://code.claude.com/docs/en/mcp-quickstart).

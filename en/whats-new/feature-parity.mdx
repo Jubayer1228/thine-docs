@@ -1,0 +1,75 @@
+---
+title: Feature parity
+description: Thine Code vs Claude Code feature audit — working, partial, and cloud-only items.
+---
+
+This page summarizes parity between **Thine Code** and official [Claude Code](https://code.claude.com/docs/en/whats-new) (weeks 13–26). Regenerate from the repo:
+
+```bash
+cd thine-code/claude && bun scripts/audit-whats-new.ts --json
+```
+
+## Summary (last audit)
+
+| Status | Count | Meaning |
+| --- | --- | --- |
+| **Working** | 20 | Implemented and usable with universal LLMs |
+| **Partial** | 16 | Present but gated, stubbed, or REPL-only |
+| **Missing** | 0 | Not in fork |
+| **Cloud-only** | 3 | Requires Anthropic infrastructure |
+
+## Working on Gemini / universal providers
+
+| Feature | Notes |
+| --- | --- |
+| `mcp login` / `logout` | CLI OAuth for HTTP/SSE MCP |
+| Shell mode (`! cmd`) | Bash mode via `!` prefix |
+| `/rewind` after `/clear` | Parent session preserved |
+| `/cd` | Mid-session cwd change |
+| `/goal` | Completion condition + auto-continue |
+| `/code-review` | Alias for `/review` |
+| `/config`, `/usage`, `/loop` | Settings and token UI |
+| `--safe-mode`, `--fallback-model` | CLI flags |
+| `--plugin-dir`, `--plugin-url` | Zip and URL plugins |
+| `project purge`, `agents --json` | Extended CLI |
+| Multi-provider presets | `llmPresets.ts` |
+| PowerShell tool | Windows native shell |
+| Tool(param:value) permissions | Pattern-based rules |
+
+## Partial / gated
+
+| Feature | How to enable or workaround |
+| --- | --- |
+| Auto mode classifier | `CLAUDE_CODE_TRANSCRIPT_CLASSIFIER=1` |
+| Sub-agents spawn sub-agents | `FORK_SUBAGENT` off in external builds |
+| Monitor tool | `MONITOR_TOOL` off by default |
+| Computer use / web browser | `CHICAGO_MCP`, `WEB_BROWSER_TOOL` off |
+| Ultraplan | Gated off in external build |
+| `/ultrareview` | Local review on Gemini; cloud fleet is Anthropic-only |
+| `claude ultrareview` CLI | Stub — use `/ultrareview` or `-p` review |
+| Fast mode | Anthropic billing model |
+
+## Cloud-only (not in Thine)
+
+| Feature | Reason |
+| --- | --- |
+| Artifacts (claude.ai share) | Anthropic cloud |
+| Opus 4.7/4.8 defaults, Routines | Anthropic models + cloud |
+| Cloud ultrareview fleet | Anthropic infrastructure |
+
+## Live Gemini probes
+
+Verify end-to-end with your API key:
+
+```bash
+GEMINI_API_KEY=... bun scripts/audit-whats-new.ts --live
+node dist/cli.mjs -p "Reply with exactly: WHATS_NEW_OK"
+```
+
+## Contributing parity
+
+When upstream ships a new [weekly digest](https://code.claude.com/docs/en/whats-new):
+
+1. Add a row to `scripts/audit-whats-new.ts`
+2. Implement portable features in `thine-code/claude/`
+3. Update this page and `en/whats-new.mdx`

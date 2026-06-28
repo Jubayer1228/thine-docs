@@ -1,0 +1,38 @@
+---
+title: Permissions
+description: Control tool access with allow/deny rules and permission modes.
+---
+
+Upstream: [Configure permissions](https://code.claude.com/docs/en/permissions).
+
+## Rules syntax
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(git diff:*)",
+      "Bash(npm test:*)",
+      "Read",
+      "Edit"
+    ],
+    "deny": [
+      "Bash(curl:*)",
+      "WebSearch"
+    ]
+  }
+}
+```
+
+## Tool parameter matching
+
+Deny or ask on specific parameters (upstream week 25+):
+
+```
+Agent(model:opus)
+Bash(rm -rf:*)
+```
+
+## Modes
+
+See [Permission modes](/en/permission-modes).

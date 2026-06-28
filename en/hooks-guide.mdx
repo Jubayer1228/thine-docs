@@ -1,0 +1,36 @@
+---
+title: Automate with hooks
+description: Run shell commands when Thine Code edits files, finishes turns, or needs input.
+---
+
+Hooks run external commands at lifecycle points — format on save, lint before commit, block dangerous bash.
+
+Upstream guide: [Automate actions with hooks](https://code.claude.com/docs/en/hooks-guide).
+
+## Example: format after edit
+
+`.claude/settings.json`:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "prettier --write $FILE_PATH"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Conditional hooks
+
+Use `if` conditions (upstream week 13+) to match tool input patterns.
+
+Reference: [Hooks reference](/en/hooks).

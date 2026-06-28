@@ -1,0 +1,79 @@
+---
+title: Agent SDK overview
+description: Build production AI agents with Thine Code as a library — query(), sessions, and subprocess runtime.
+---
+
+The Thine Agent SDK exposes the same agent loop as the CLI through a programmatic API. Use it to build automation, CI pipelines, custom UIs, and backend services — backed by **any configured LLM provider**.
+
+This fork implements a real SDK (not a stub): `query()` streaming, session persistence, and subprocess isolation.
+
+## Install
+
+From the `thine-code/claude` package:
+
+```bash
+cd thine-code/claude
+bun install && bun run build
+```
+
+TypeScript import path (after build):
+
+```typescript
+import { query } from './sdk/index.js'
+```
+
+## Minimal example
+
+```typescript
+import { query } from '@anthropic-ai/claude-code-gemini/sdk'
+
+for await (const message of query({
+  prompt: 'Find and fix the bug in auth.ts',
+  options: {
+    cwd: '/path/to/repo',
+    permissionMode: 'bypassPermissions', // or 'default'
+    maxTurns: 10,
+  },
+})) {
+  if (message.type === 'assistant') {
+    console.log(message.message)
+  }
+  if (message.type === 'result') {
+    console.log('Done:', message.result)
+  }
+}
+```
+
+Set provider env vars before running (`GEMINI_API_KEY`, etc.) — see [Providers](/en/providers).
+
+## Capabilities
+
+<CardGroup cols={2}>
+  <Card title="Agent loop" icon="rotate" href="/en/how-it-works">
+    Same tools as the CLI: Read, Edit, Bash, Grep, Agent, MCP, and more.
+  </Card>
+  <Card title="Sessions" icon="folder" href="/en/agent-sdk/sessions">
+    Resume, fork, and persist conversations by session ID.
+  </Card>
+  <Card title="Claude Code features" icon="puzzle-piece" href="https://code.claude.com/docs/en/agent-sdk/claude-code-features">
+    CLAUDE.md, skills, hooks, MCP — loaded when enabled.
+  </Card>
+  <Card title="Multi-provider" icon="server" href="/en/providers">
+    Gemini, OpenAI, DeepSeek, and others via universal adapter.
+  </Card>
+</CardGroup>
+
+## Compare to upstream
+
+| | Thine SDK | Anthropic Agent SDK |
+| --- | --- | --- |
+| `query()` streaming | Yes | Yes |
+| Subprocess runtime | Yes | Yes |
+| Anthropic OAuth required | No | Often yes |
+| Universal LLM backends | Yes | Via Bedrock/Vertex |
+
+## Next steps
+
+- [SDK Quickstart](/en/agent-sdk/quickstart)
+- [Sessions](/en/agent-sdk/sessions)
+- [Upstream TypeScript reference](https://code.claude.com/docs/en/agent-sdk/typescript)

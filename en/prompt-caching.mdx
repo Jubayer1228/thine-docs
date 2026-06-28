@@ -1,0 +1,27 @@
+---
+title: Prompt caching
+description: How Thine Code maps Anthropic cache markers to Gemini, OpenAI, and compatible providers.
+---
+
+Thine Code preserves upstream **cache_control** placement and maps it per provider.
+
+## Provider behavior
+
+| Provider | Caching |
+| --- | --- |
+| **Gemini 2.5+** | Native `generateContent` + explicit cached content; reports `cachedContentTokenCount` |
+| **OpenAI** | Automatic prefix caching + `prompt_cache_key` from prefix hash |
+| **OpenAI-compatible** | Same when gateway supports prefix caching (Kimi, GLM, LiteLLM) |
+
+## Disable or tune
+
+```bash
+# Force Gemini OpenAI-compat endpoint (different cache semantics)
+export CLAUDE_CODE_GEMINI_USE_OPENAI=1
+```
+
+## Implementation
+
+See `services/api/universalLlm/promptCache.ts` in the `thine-code` repo and the in-repo `UNIVERSAL_LLM.md` guide.
+
+Upstream reference: [How Claude Code uses prompt caching](https://code.claude.com/docs/en/prompt-caching).

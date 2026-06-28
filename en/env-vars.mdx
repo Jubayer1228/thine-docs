@@ -1,0 +1,46 @@
+---
+title: Environment variables
+description: Environment variables that control Thine Code behavior and LLM routing.
+---
+
+## Provider selection
+
+| Variable | Description |
+| --- | --- |
+| `CLAUDE_CODE_LLM_PROVIDER` | `gemini`, `openai`, `deepseek`, `qwen`, `kimi`, `glm`, `ollama`, `openai-compatible` |
+| `CLAUDE_CODE_USE_GEMINI` | `1` → Gemini backend |
+| `CLAUDE_CODE_USE_OPENAI` | `1` → OpenAI backend |
+| `CLAUDE_CODE_LLM_MODEL` | Override main loop model |
+| `GEMINI_API_KEY` | Google Gemini API key |
+| `OPENAI_API_KEY` | OpenAI API key |
+| `DEEPSEEK_API_KEY` | DeepSeek API key |
+| `ZHIPU_API_KEY` / `GLM_API_KEY` | Zhipu GLM |
+| `MOONSHOT_API_KEY` | Kimi / Moonshot |
+| `DASHSCOPE_API_KEY` | Qwen / DashScope |
+| `THINE_API_KEY` | Generic Thine API key alias |
+
+## Model overrides
+
+| Variable | Description |
+| --- | --- |
+| `GEMINI_MODEL` | Default Gemini model |
+| `OPENAI_MODEL` | Default OpenAI model |
+| `ANTHROPIC_MODEL` | Remapped to universal model when not on first-party |
+
+## Build / behavior
+
+| Variable | Description |
+| --- | --- |
+| `CLAUDE_CODE_SIMPLE` | Lean external build |
+| `CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS` | Disable Anthropic beta headers |
+| `CLAUDE_CODE_SAFE_MODE` | Set by `--safe-mode` |
+| `CLAUDE_CODE_TRANSCRIPT_CLASSIFIER` | Enable auto-mode classifier |
+| `TAVILY_API_KEY` | Web search for universal LLMs |
+
+## Gemini caching
+
+| Variable | Description |
+| --- | --- |
+| `CLAUDE_CODE_GEMINI_USE_OPENAI` | Force OpenAI-compat Gemini endpoint |
+
+Full upstream list: [Environment variables](https://code.claude.com/docs/en/env-vars) (many apply unchanged).

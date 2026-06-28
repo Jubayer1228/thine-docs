@@ -1,0 +1,16 @@
+{
+  "name": "thine-docs",
+  "private": true,
+  "description": "Documentation for Thine Code — multi-provider agentic coding CLI",
+  "scripts": {
+    "dev": "mintlify dev",
+    "build": "mintlify build",
+    "broken-links": "mintlify broken-links"
+  },
+  "devDependencies": {
+    "mintlify": "^4.2.25"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

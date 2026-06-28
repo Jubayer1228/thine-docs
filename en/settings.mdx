@@ -1,0 +1,39 @@
+---
+title: Settings
+description: Configure Thine Code with settings files and /config.
+---
+
+Settings cascade: managed → project → user → session flags.
+
+Upstream: [Claude Code settings](https://code.claude.com/docs/en/settings).
+
+## Files
+
+| Scope | Location |
+| --- | --- |
+| User | `~/.claude/settings.json` |
+| Project | `.claude/settings.json` |
+| Local | `.claude/settings.local.json` (gitignored) |
+
+## /config command
+
+```text
+/config
+/config verbose=true
+/config model=sonnet
+```
+
+## CLI override
+
+```bash
+thine --settings path/to/extra.json
+thine --settings '{"verbose":true}'
+```
+
+## Safe mode
+
+```bash
+thine --safe-mode
+```
+
+Disables plugins, skills, hooks, MCP, and CLAUDE.md for troubleshooting.

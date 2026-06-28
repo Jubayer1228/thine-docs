@@ -1,0 +1,25 @@
+# Thine Code Docs
+
+> Official documentation for Thine Code — agentic coding with Gemini, OpenAI, DeepSeek, and other LLM providers. Fork of Claude Code with multi-provider routing, API-key auth, and Agent SDK.
+
+## Docs
+
+- [Overview](en/overview.mdx): What Thine Code is and how it relates to Claude Code
+- [Quickstart](en/quickstart.mdx): Install, configure a provider, run your first task
+- [LLM providers](en/providers.mdx): Gemini, OpenAI, DeepSeek, Qwen, Kimi, GLM, Ollama
+- [CLI reference](en/cli-reference.mdx): Commands and flags
+- [Environment variables](en/env-vars.mdx): Provider and behavior env vars
+- [Agent SDK overview](en/agent-sdk/overview.mdx): query(), sessions, subprocess runtime
+- [What's new](en/whats-new.mdx): Parity with Claude Code weekly releases
+- [Feature parity](en/whats-new/feature-parity.mdx): Audit matrix vs upstream
+- [/goal command](en/goal.mdx): Completion conditions and auto-continue
+- [MCP](en/mcp.mdx): Model Context Protocol integration
+- [Plugins](en/plugins.mdx): --plugin-dir, --plugin-url, zip archives
+- [Prompt caching](en/prompt-caching.mdx): Universal provider caching
+- [Troubleshooting](en/troubleshooting.mdx): Common fixes
+
+## Upstream reference
+
+Claude Code documentation: https://code.claude.com/docs/en/overview
+
+Fetch the complete upstream index at: https://code.claude.com/docs/llms.txt

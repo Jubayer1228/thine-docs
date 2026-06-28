@@ -1,0 +1,35 @@
+---
+title: MCP
+description: Connect Thine Code to external tools with the Model Context Protocol.
+---
+
+The [Model Context Protocol (MCP)](https://modelcontextprotocol.io) extends Thine Code with external tools — databases, APIs, browsers, and custom servers.
+
+Full upstream guide: [Connect Claude Code to tools via MCP](https://code.claude.com/docs/en/mcp).
+
+## Configure servers
+
+**Project config** — `.mcp.json` in repo root
+
+**User config** — `~/.claude.json` mcpServers section
+
+**CLI inline**:
+
+```bash
+thine --mcp-config path/to/servers.json
+```
+
+## OAuth login (HTTP/SSE)
+
+```bash
+thine mcp login my-github-server
+thine mcp logout my-github-server
+```
+
+## In-session management
+
+```
+/mcp
+```
+
+Lists connected servers, tool counts, and connection status.

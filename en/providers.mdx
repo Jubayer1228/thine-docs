@@ -1,0 +1,84 @@
+---
+title: LLM providers
+description: Configure Gemini, OpenAI, DeepSeek, Qwen, Kimi, GLM, Ollama, or any OpenAI-compatible API for Thine Code.
+---
+
+Thine Code routes the Claude Code agent loop through a **universal LLM adapter**. The same tools, skills, and session model work regardless of which provider you choose.
+
+## Provider table
+
+| Provider | Select | API key env | Default model | Base URL |
+| --- | --- | --- | --- | --- |
+| **Gemini** | `CLAUDE_CODE_LLM_PROVIDER=gemini` or `CLAUDE_CODE_USE_GEMINI=1` | `GEMINI_API_KEY`, `GOOGLE_API_KEY` | `gemini-2.5-flash` | Google Generative Language API |
+| **OpenAI** | `CLAUDE_CODE_LLM_PROVIDER=openai` | `OPENAI_API_KEY` | `gpt-4o-mini` | `https://api.openai.com/v1` |
+| **DeepSeek** | `deepseek` (auto-detect) | `DEEPSEEK_API_KEY` | `deepseek-chat` | `https://api.deepseek.com/v1` |
+| **Qwen** | `qwen` | `DASHSCOPE_API_KEY`, `QWEN_API_KEY` | `qwen-plus` | DashScope compatible mode |
+| **Kimi** | `kimi` | `MOONSHOT_API_KEY`, `KIMI_API_KEY` | `moonshot-v1-8k` | Moonshot API |
+| **GLM** | `glm` | `ZHIPU_API_KEY`, `GLM_API_KEY` | `glm-4.5-air` | Zhipu BigModel |
+| **Ollama** | `ollama` | (optional) | `llama3.2` | `http://localhost:11434/v1` |
+| **Custom** | `openai-compatible` | `OPENAI_COMPATIBLE_API_KEY` | — | `OPENAI_COMPATIBLE_BASE_URL` |
+
+## Auto-detection
+
+When **only one** provider-specific API key is set in the environment, Thine picks the backend automatically — no flag required.
+
+## Model overrides
+
+```bash
+export CLAUDE_CODE_LLM_MODEL=gemini-2.5-pro
+# or
+export ANTHROPIC_MODEL=gpt-4o   # remapped to your universal model
+```
+
+Claude aliases (`sonnet`, `opus`, `haiku`, `claude-*`) are **remapped** to your configured universal model so upstream skills and commands keep working.
+
+## Gemini quick start
+
+```bash
+export CLAUDE_CODE_USE_GEMINI=1
+export GEMINI_API_KEY=your-key
+export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
+```
+
+Native Gemini streaming and prompt caching are enabled by default. Set `CLAUDE_CODE_GEMINI_USE_OPENAI=1` to force the OpenAI-compatible endpoint instead.
+
+## OpenAI-compatible gateways
+
+Point at LiteLLM, vLLM, or an internal gateway:
+
+```bash
+export CLAUDE_CODE_LLM_PROVIDER=openai-compatible
+export OPENAI_COMPATIBLE_BASE_URL=https://your-gateway/v1
+export OPENAI_COMPATIBLE_API_KEY=your-key
+export OPENAI_COMPATIBLE_MODEL=your-model
+```
+
+## Web search
+
+Universal providers use Tavily for the WebSearch tool:
+
+```bash
+export TAVILY_API_KEY=tvly-...
+# or
+export CLAUDE_CODE_TAVILY_API_KEY=tvly-...
+```
+
+## Fallback model
+
+In print mode, chain a fallback when the primary model is overloaded:
+
+```bash
+thine -p --fallback-model gemini-2.5-flash "your prompt"
+```
+
+## Implementation reference
+
+| File (in `thine-code/claude/`) | Role |
+| --- | --- |
+| `utils/model/llmPresets.ts` | Named provider presets |
+| `utils/model/providers.ts` | Detection and env resolution |
+| `services/api/universalLlm/client.ts` | Anthropic-shaped API client |
+| `services/api/universalLlm/geminiNative.ts` | Native Gemini streaming + cache |
+| `services/api/universalLlm/promptCache.ts` | Cross-provider prompt caching |
+
+See also [Prompt caching](/en/prompt-caching).

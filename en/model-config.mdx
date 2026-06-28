@@ -1,0 +1,42 @@
+---
+title: Model configuration
+description: Choose models, aliases, and effort levels in Thine Code.
+---
+
+## Session model
+
+```bash
+thine --model sonnet
+thine --model gemini-2.5-pro
+```
+
+In REPL: `/model`
+
+## Aliases
+
+| Alias | Thine behavior |
+| --- | --- |
+| `sonnet`, `opus`, `haiku` | Remapped to your universal model |
+| Full provider name | Passed through to backend |
+
+Configure defaults via [Providers](/en/providers):
+
+```bash
+export CLAUDE_CODE_LLM_MODEL=gemini-2.5-flash
+```
+
+## Fallback
+
+```bash
+thine -p --fallback-model gpt-4o-mini "query"
+```
+
+## Effort
+
+```bash
+thine --effort high
+```
+
+Effort levels affect upstream Anthropic models; universal providers may ignore or map effort differently.
+
+Upstream: [Model configuration](https://code.claude.com/docs/en/model-config).

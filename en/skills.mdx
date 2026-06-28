@@ -1,0 +1,36 @@
+---
+title: Skills
+description: Extend Thine Code with reusable slash-command workflows.
+---
+
+Skills are packaged prompts invoked as `/skill-name`. Thine ships bundled skills (`/loop`, `/review`, etc.) and loads project skills from `.claude/skills/`.
+
+Upstream: [Extend Claude with skills](https://code.claude.com/docs/en/skills).
+
+## Invoke a skill
+
+```text
+/loop 5m check CI status
+/bugfix-workflow
+```
+
+## Create a skill
+
+Add `SKILL.md` or a skill folder under `.claude/skills/`:
+
+```markdown
+---
+name: deploy-staging
+description: Deploy to staging and verify health
+---
+
+When invoked, run the staging deploy script and curl the health endpoint.
+```
+
+## Disable skills
+
+```bash
+thine --disable-slash-commands
+```
+
+Or use `--safe-mode` to disable all customizations.

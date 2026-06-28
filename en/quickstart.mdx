@@ -1,0 +1,118 @@
+---
+title: Quickstart
+description: Install Thine Code, configure an LLM provider, and complete your first agent task.
+---
+
+Welcome to Thine Code! This guide gets you from zero to a working session in a few minutes.
+
+## Prerequisites
+
+- **Node.js 18+** or **Bun** for building from source
+- An API key from at least one provider ([Gemini](https://aistudio.google.com/apikey), [OpenAI](https://platform.openai.com/api-keys), etc.)
+- A git repository or project directory to work in
+
+## 1. Build the CLI
+
+```bash
+git clone https://github.com/thine-ai/thine-code.git
+cd thine-code/claude
+bun install
+PATH="$HOME/.bun/bin:$PATH" bun run build
+```
+
+The built CLI is at `claude/dist/cli.mjs`.
+
+<Tip>
+  Add an alias for convenience:
+
+  ```bash
+  alias thine='node /path/to/thine-code/claude/dist/cli.mjs'
+  ```
+</Tip>
+
+## 2. Configure Gemini (recommended)
+
+```bash
+export CLAUDE_CODE_USE_GEMINI=1
+export GEMINI_API_KEY=your-key-here
+export GEMINI_MODEL=gemini-2.5-flash          # optional
+export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
+export CLAUDE_CODE_SIMPLE=1                   # optional: lean external build
+```
+
+Optional: enable web search on universal providers:
+
+```bash
+export TAVILY_API_KEY=your-tavily-key
+```
+
+## 3. Verify auth
+
+```bash
+node dist/cli.mjs auth status
+```
+
+Expected output:
+
+```
+Auth: Thine (Gemini API key)
+```
+
+## 4. Run your first task
+
+**Interactive session** (default):
+
+```bash
+cd ~/your-project
+node /path/to/dist/cli.mjs
+```
+
+**Print mode** (non-interactive, great for scripts):
+
+```bash
+node dist/cli.mjs -p "list the top-level directories and summarize the project"
+```
+
+**With permissions skipped** (sandboxes only):
+
+```bash
+node dist/cli.mjs -p --dangerously-skip-permissions "run the test suite and report failures"
+```
+
+## 5. Try slash commands
+
+In an interactive session:
+
+| Command | What it does |
+| --- | --- |
+| `/help` | List available commands |
+| `/config` | View or change settings |
+| `/model` | Switch model alias |
+| `/goal <condition>` | Keep working until condition holds |
+| `/cd <path>` | Change working directory mid-session |
+| `/review` | Code review workflow |
+
+## Other providers
+
+Set `CLAUDE_CODE_LLM_PROVIDER` instead of `CLAUDE_CODE_USE_GEMINI`:
+
+```bash
+# OpenAI
+export CLAUDE_CODE_LLM_PROVIDER=openai
+export OPENAI_API_KEY=sk-...
+
+# DeepSeek (auto-detected from key)
+export DEEPSEEK_API_KEY=sk-...
+
+# GLM (Zhipu)
+export CLAUDE_CODE_LLM_PROVIDER=glm
+export ZHIPU_API_KEY=...
+```
+
+Full table: [Providers](/en/providers).
+
+## Next steps
+
+- [How Thine Code works](/en/how-it-works) — agent loop, tools, context
+- [Settings](/en/settings) — permissions, hooks, CLAUDE.md
+- [Agent SDK](/en/agent-sdk/quickstart) — programmatic `query()` API

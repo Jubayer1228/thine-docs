@@ -1,0 +1,32 @@
+---
+title: Project memory (CLAUDE.md)
+description: Give Thine Code persistent instructions with CLAUDE.md and auto memory.
+---
+
+Thine Code reads **`CLAUDE.md`** files from your project hierarchy at session start — same as Claude Code.
+
+See upstream: [How Claude remembers your project](https://code.claude.com/docs/en/memory).
+
+## Quick example
+
+Create `CLAUDE.md` in your repo root:
+
+```markdown
+# Project instructions
+
+- Use bun, not npm
+- Run `bun test` before committing
+- Prefer editing existing files over creating new ones
+```
+
+## Scopes
+
+| Location | Scope |
+| --- | --- |
+| `./CLAUDE.md` | Project |
+| `~/.claude/CLAUDE.md` | User-global |
+| Nested dirs | Loaded when tools access those paths |
+
+## Auto memory
+
+When enabled, Thine can persist learnings across sessions (build commands, debugging notes). Behavior matches upstream auto memory where compiled in your build.

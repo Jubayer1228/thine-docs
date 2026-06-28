@@ -1,0 +1,34 @@
+---
+title: Permission modes
+description: Control whether Thine asks before editing files or running commands.
+---
+
+Permission modes match Claude Code. See upstream: [Choose a permission mode](https://code.claude.com/docs/en/permission-modes).
+
+| Mode | Behavior |
+| --- | --- |
+| **default** | Prompt for risky tools |
+| **acceptEdits** | Auto-accept file edits; prompt for bash |
+| **plan** | Read-only exploration until plan approved |
+| **bypassPermissions** | Skip prompts (`--dangerously-skip-permissions`) |
+
+Cycle modes in the REPL with **Shift+Tab** (when compiled in).
+
+## Auto mode
+
+When the transcript classifier is enabled (`CLAUDE_CODE_TRANSCRIPT_CLASSIFIER=1`), a background classifier can auto-approve safe actions — similar to upstream auto mode.
+
+## Tool rules
+
+Fine-grained allow/deny with patterns:
+
+```json
+{
+  "permissions": {
+    "allow": ["Bash(npm test:*)", "Edit"],
+    "deny": ["Bash(curl:*)"]
+  }
+}
+```
+
+See [Permissions](/en/permissions).

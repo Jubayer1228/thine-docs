@@ -1,0 +1,38 @@
+---
+title: Best practices
+description: Tips for getting the most out of Thine Code with universal LLM providers.
+---
+
+## Choose the right model
+
+- **Fast iteration:** `gemini-2.5-flash`, `gpt-4o-mini`, `deepseek-chat`
+- **Hard tasks:** `gemini-2.5-pro`, larger GLM/Kimi models
+- Use `--fallback-model` in CI when primary may rate-limit
+
+## Project instructions
+
+Invest in `CLAUDE.md` — coding standards, test commands, and architecture notes improve every turn across providers.
+
+## Verifiable goals
+
+Use `/goal` with objective criteria:
+
+```text
+/goal bun test passes with zero failures and bun run lint exits 0
+```
+
+## Permissions
+
+Start with default mode; use `acceptEdits` when you trust the repo. Never use `--dangerously-skip-permissions` outside sandboxes.
+
+## CI patterns
+
+```bash
+export CLAUDE_CODE_USE_GEMINI=1
+export GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
+thine -p --max-turns 20 "fix the failing test shown in the last CI log"
+```
+
+## Upstream guide
+
+[Best practices for Claude Code](https://code.claude.com/docs/en/best-practices) — planning, parallel sessions, and review workflows.

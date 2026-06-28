@@ -1,0 +1,46 @@
+---
+title: Keep Claude working toward a goal
+description: Set a completion condition with /goal and Thine Code keeps working across turns until the condition holds.
+---
+
+The `/goal` command sets a **completion condition**. After each turn, a fast model evaluates whether the condition is met. If not, Thine automatically starts another turn instead of handing control back.
+
+Based on upstream [Claude Code /goal](https://code.claude.com/docs/en/goal).
+
+## Usage
+
+```text
+/goal all tests in test/auth pass and the lint step is clean
+```
+
+Other forms:
+
+```text
+/goal status          # show active goal
+/goal clear           # stop auto-continue
+```
+
+## How it works
+
+1. You set a verifiable end state (tests, lint, migration complete, etc.)
+2. Thine works a turn as usual
+3. A lightweight evaluator checks the transcript against your condition
+4. If not met, a `<goal>` continuation prompt is queued automatically (up to 100 turns)
+5. When met, the goal clears and you see a completion message
+
+## Works in
+
+- Interactive REPL
+- Print mode (when goal is set via `/goal` in a resumed session)
+- Any universal LLM provider (evaluator uses your configured fast model)
+
+## Tips
+
+- Prefer **objective** conditions: "all tests pass", "typecheck clean", "file X exports function Y"
+- Run verification yourself — the evaluator reads the transcript, not live process state
+- Use `/goal clear` if the agent loops on an impossible condition
+
+## See also
+
+- [`/loop`](/en/whats-new) — recurring prompts on an interval
+- [Best practices](/en/best-practices)

@@ -1,0 +1,50 @@
+---
+title: Troubleshooting
+description: Common Thine Code issues and fixes.
+---
+
+## Auth / API key
+
+**Symptom:** `Auth required` or 401 errors.
+
+**Fix:** Set provider key and flag:
+
+```bash
+export CLAUDE_CODE_USE_GEMINI=1
+export GEMINI_API_KEY=your-key
+thine auth status
+```
+
+## Model not found
+
+**Symptom:** 404 or invalid model from provider.
+
+**Fix:** Set an model your account supports:
+
+```bash
+export GEMINI_MODEL=gemini-2.5-flash
+export CLAUDE_CODE_LLM_MODEL=gemini-2.5-flash
+```
+
+## Build fails (bun not found)
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+PATH="$HOME/.bun/bin:$PATH" bun run build
+```
+
+## GLM / regional providers 429
+
+Insufficient balance or rate limits — add credits or switch model (e.g. `glm-4.5-air`).
+
+## Plugin load errors
+
+Verify path exists or zip is valid:
+
+```bash
+thine --plugin-dir ./plugin --safe-mode   # isolate plugin issues
+```
+
+## Upstream troubleshooting
+
+[Claude Code troubleshooting](https://code.claude.com/docs/en/troubleshooting) covers install, LSP, MCP, and IDE issues that also apply to Thine.

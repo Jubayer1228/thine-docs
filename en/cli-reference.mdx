@@ -1,0 +1,69 @@
+---
+title: CLI reference
+description: Complete reference for Thine Code command-line interface, including commands and flags.
+---
+
+Complete reference for the Thine Code CLI. The binary name is still `claude` during the transition; branding shows **Thine Code** in `--help` and `--version`.
+
+## CLI commands
+
+| Command | Description | Example |
+| --- | --- | --- |
+| `thine` | Start interactive session | `thine` |
+| `thine "query"` | Interactive session with initial prompt | `thine "explain this project"` |
+| `thine -p "query"` | Print response and exit | `thine -p "summarize README"` |
+| `thine -c` | Continue most recent conversation | `thine -c` |
+| `thine -r [id\|term]` | Resume session by ID or search | `thine -r abc123` |
+| `thine --from-pr [n]` | Resume session linked to a PR | `thine --from-pr 42` |
+| `thine auth login` | Configure API key / auth | `thine auth login` |
+| `thine auth status` | Show auth provider | `thine auth status` |
+| `thine auth logout` | Clear stored credentials | `thine auth logout` |
+| `thine mcp` | Manage MCP servers | `thine mcp list` |
+| `thine mcp login <name>` | OAuth login for HTTP/SSE MCP | `thine mcp login github` |
+| `thine mcp logout <name>` | Clear MCP OAuth tokens | `thine mcp logout github` |
+| `thine plugin` | Plugin marketplace commands | `thine plugin list` |
+| `thine agents` | List configured agents | `thine agents --json` |
+| `thine project purge` | Clean local project state | `thine project purge` |
+| `thine doctor` | Diagnose installation | `thine doctor` |
+| `thine update` | Check for updates | `thine update` |
+
+## Common flags
+
+| Flag | Description |
+| --- | --- |
+| `-p, --print` | Non-interactive mode; print result and exit |
+| `--model <model>` | Model alias or full name for the session |
+| `--fallback-model <model>` | Fallback chain in print mode (repeatable up to 3) |
+| `--max-turns <n>` | Max agentic turns in print mode |
+| `--dangerously-skip-permissions` | Bypass permission prompts (sandboxes only) |
+| `--safe-mode` | Disable plugins, skills, hooks, MCP, CLAUDE.md |
+| `--plugin-dir <path>` | Load plugin from directory or `.zip` (repeatable) |
+| `--plugin-url <url>` | Fetch plugin `.zip` from URL for this session |
+| `--mcp-config <json\|file>` | Inline MCP server config |
+| `--settings <file\|json>` | Additional settings |
+| `--add-dir <path>` | Extra directories for tool access |
+| `--continue` / `-c` | Continue last session in cwd |
+| `--resume` / `-r` | Resume by session ID |
+| `--fork-session` | New session ID when resuming |
+| `--session-id <uuid>` | Use specific session UUID |
+| `--output-format text\|json\|stream-json` | Print mode output format |
+| `--system-prompt-file <file>` | Custom system prompt from file |
+| `--bg, --background` | Start as background agent in tmux |
+
+## Environment shortcuts
+
+```bash
+export CLAUDE_CODE_USE_GEMINI=1
+export GEMINI_API_KEY=...
+export CLAUDE_CODE_LLM_PROVIDER=gemini   # explicit provider
+export CLAUDE_CODE_LLM_MODEL=gemini-2.5-flash
+export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
+```
+
+Full list: [Environment variables](/en/env-vars).
+
+## See also
+
+- [Quickstart](/en/quickstart)
+- [Interactive mode](https://code.claude.com/docs/en/interactive-mode) (upstream — same keybindings)
+- [Headless / SDK mode](https://code.claude.com/docs/en/headless)
