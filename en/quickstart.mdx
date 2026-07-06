@@ -7,40 +7,36 @@ Welcome to Thine! This guide gets you from zero to a working session in a few mi
 
 ## Prerequisites
 
-- **Node.js 18+**
+- **Node.js 20+**
+- The official **Claude Code CLI** — Thine drives it as the agent harness:
+  ```bash
+  curl -fsSL https://claude.ai/install.sh | bash
+  ```
+  (or pass `--install-claude` to the Thine installer below)
 - An API key from at least one provider ([Gemini](https://aistudio.google.com/apikey), [OpenAI](https://platform.openai.com/api-keys), etc.)
 - A git repository or project directory to work in
 
 ## 1. Install Thine
 
-Thine Runtime is distributed privately until [thine.ai](https://thine.ai) hosts the official installer. Pick one path:
-
-**Official one-liner (coming soon):**
+One line — served from the hosted release today, and from `robinailabs.com` once DNS is live:
 
 ```bash
-curl -fsSL https://thine.ai/install.sh | bash
+curl -fsSL https://storage.googleapis.com/robinailabs-dist/install.sh | bash
 ```
 
-**Release tarball — recommended for early access (no public repo):**
-
-Your team builds and uploads a release:
-
 ```bash
-npm run package:release   # creates dist/thine-runtime-<version>.tar.gz
+# Same installer via the custom domain (when live):
+curl -fsSL https://robinailabs.com/install.sh | bash
 ```
 
-Host `scripts/install.sh` and the tarball on any HTTPS static host, then share:
+**Options** (append after `bash -s --`):
 
 ```bash
-curl -fsSL https://YOUR_CDN/install.sh | \
-  THINE_ARTIFACT_URL=https://YOUR_CDN/releases/thine-runtime-0.1.0.tar.gz bash
-```
+# OpenAI Codex profile instead of Gemini
+curl -fsSL https://storage.googleapis.com/robinailabs-dist/install.sh | bash -s -- --backend codex
 
-**Private git (SSH access required):**
-
-```bash
-curl -fsSL https://YOUR_CDN/install.sh | \
-  THINE_REPO_URL=git@github.com:your-org/thine-runtime.git bash
+# Install the Claude Code CLI at the same time
+curl -fsSL https://storage.googleapis.com/robinailabs-dist/install.sh | bash -s -- --install-claude
 ```
 
 **Local checkout (developers):**
@@ -49,6 +45,13 @@ curl -fsSL https://YOUR_CDN/install.sh | \
 cd thine-runtime
 ./scripts/install.sh                  # Gemini profile (default)
 ./scripts/install.sh --backend codex  # OpenAI Codex mini profile
+```
+
+**Publish a new release (maintainers):**
+
+```bash
+npm run package:release   # creates dist/thine-runtime-<version>.tar.gz
+# then upload install.sh + tarball + releases/latest.txt to the dist host
 ```
 
 Install puts `thine` and `thine-runtime` in `~/.local/bin` and creates `~/.config/thine-runtime/config.json`.

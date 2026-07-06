@@ -17,26 +17,23 @@ Powerful agentic coding in your **terminal**, **editor**, **standalone IDE**, or
 
     ### Install
 
-    **One-liner (when `thine.ai` is live):**
+    **Prerequisite — Claude Code CLI** (Thine drives it as the agent harness):
 
     ```bash
-    curl -fsSL https://thine.ai/install.sh | bash
+    curl -fsSL https://claude.ai/install.sh | bash
     ```
 
-    **Until then — release tarball (no git, repo stays private):**
-
-    Host `install.sh` and a release archive from `./scripts/package-release.sh` on any static URL (S3, R2, Vercel, internal CDN). End users run:
+    **One-liner (works today via hosted release):**
 
     ```bash
-    curl -fsSL https://YOUR_CDN/install.sh | \
-      THINE_ARTIFACT_URL=https://YOUR_CDN/releases/thine-runtime-0.1.0.tar.gz bash
+    curl -fsSL https://storage.googleapis.com/robinailabs-dist/install.sh | bash
     ```
 
-    **Private git (team with SSH access):**
+    The same installer is served from `https://robinailabs.com/install.sh` once DNS is live. Append options after `bash -s --`:
 
     ```bash
-    curl -fsSL https://YOUR_CDN/install.sh | \
-      THINE_REPO_URL=git@github.com:your-org/thine-runtime.git bash
+    curl -fsSL https://storage.googleapis.com/robinailabs-dist/install.sh | bash -s -- --backend codex
+    curl -fsSL https://storage.googleapis.com/robinailabs-dist/install.sh | bash -s -- --install-claude
     ```
 
     **From a local checkout (internal dev):**

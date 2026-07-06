@@ -20,7 +20,8 @@ Thine Runtime is the gateway and middleware layer. The **Thine agent** owns the 
 <Tabs>
   <Tab title="Terminal" icon="terminal">
     ```bash
-    curl -fsSL https://thine.ai/install.sh | bash
+    curl -fsSL https://claude.ai/install.sh | bash                              # agent harness
+    curl -fsSL https://storage.googleapis.com/robinailabs-dist/install.sh | bash  # Thine
     export GEMINI_API_KEY=your-key
     thine doctor
     thine -p "summarize this repo" --dangerously-skip-permissions
@@ -47,10 +48,11 @@ Thine Runtime is the gateway and middleware layer. The **Thine agent** owns the 
 <Steps>
   <Step title="Install Thine">
     ```bash
-    curl -fsSL https://thine.ai/install.sh | bash
+    curl -fsSL https://claude.ai/install.sh | bash                              # Claude Code (agent harness)
+    curl -fsSL https://storage.googleapis.com/robinailabs-dist/install.sh | bash  # Thine
     ```
 
-    Early access without a public repo: host `install.sh` + a release tarball (`npm run package:release`) and pass `THINE_ARTIFACT_URL`. See [Quickstart](/en/quickstart).
+    The same installer is served from `https://robinailabs.com/install.sh` once DNS is live. Use `--install-claude` to install the Claude Code CLI automatically. See [Quickstart](/en/quickstart).
 
     Puts `thine` and `thine-runtime` in `~/.local/bin` and creates `~/.config/thine-runtime/config.json`.
   </Step>
