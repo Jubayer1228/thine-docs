@@ -27,7 +27,8 @@ gcloud run deploy "$SERVICE" \
   --cpu=1 \
   --min-instances=0 \
   --max-instances=3 \
-  --set-env-vars="NODE_ENV=production"
+  --set-env-vars="NODE_ENV=production" \
+  --quiet
 
 info "Deployed. URL:"
 gcloud run services describe "$SERVICE" \
