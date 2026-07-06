@@ -3,17 +3,23 @@ title: Subagents
 description: Spawn isolated agents for parallel work with the Agent tool.
 ---
 
-Subagents run in isolated context with their own tool access. See upstream: [Create custom subagents](https://code.claude.com/docs/en/sub-agents).
+Subagents run in isolated context with their own tool access. This is an **Thine** feature — fully available when using Thine Runtime with the unmodified `claude` CLI.
+
 
 ## Built-in types
 
 - `general-purpose` — default exploration agent
+- `explore` — fast codebase search
 - Custom agents from `.claude/agents/` or plugins
 
 ## Nested subagents
 
-Upstream supports sub-agents spawning sub-agents (capped depth). In external Thine builds, `FORK_SUBAGENT` may be off by default — enable in `shims/bun-bundle.ts` for your distribution.
+Upstream supports sub-agents spawning sub-agents (capped depth). Available in Thine 2.x when enabled in your Thine version.
 
 ## Agent tool
 
 The main session invokes subagents via the **Agent** tool. Results stream back as task notifications.
+
+```bash
+thine -p "Use the Explore agent to find where applyMiddleware is defined" --dangerously-skip-permissions
+```

@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "Thine Code Docs",
+  "name": "Thine Docs",
   "theme": "mint",
   "colors": {
     "primary": "#0D9488",
@@ -15,14 +15,14 @@
   "navbar": {
     "links": [
       {
-        "label": "GitHub",
-        "href": "https://github.com/thine-ai/thine-code"
+        "label": "thine.ai",
+        "href": "https://thine.ai"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Get started",
-      "href": "/en/quickstart"
+      "href": "/en/platforms"
     }
   },
   "navigation": {
@@ -34,9 +34,19 @@
             "group": "Getting started",
             "pages": [
               "en/overview",
+              "en/platforms",
               "en/quickstart",
               "en/changelog",
               "en/how-it-works"
+            ]
+          },
+          {
+            "group": "Thine Runtime",
+            "pages": [
+              "en/runtime/gateway",
+              "en/runtime/configuration",
+              "en/runtime/middleware",
+              "en/runtime/dashboard"
             ]
           },
           {
@@ -51,7 +61,7 @@
         ]
       },
       {
-        "tab": "Build with Thine Code",
+        "tab": "Build with Thine",
         "groups": [
           {
             "group": "Agents and parallel work",
@@ -122,10 +132,10 @@
         ]
       },
       {
-        "tab": "Agent SDK",
+        "tab": "Thine Agent SDK",
         "groups": [
           {
-            "group": "Agent SDK",
+            "group": "Thine Agent SDK",
             "pages": [
               "en/agent-sdk/overview",
               "en/agent-sdk/quickstart",
@@ -162,14 +172,14 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Thine Code repo",
-          "href": "https://github.com/thine-ai/thine-code",
-          "icon": "github"
+          "anchor": "thine.ai",
+          "href": "https://thine.ai",
+          "icon": "globe"
         },
         {
-          "anchor": "Claude Code docs (upstream)",
-          "href": "https://code.claude.com/docs/en/overview",
-          "icon": "book-open-cover"
+          "anchor": "Thine IDE",
+          "href": "https://github.com/thine-ai/thine-code",
+          "icon": "code"
         }
       ]
     }

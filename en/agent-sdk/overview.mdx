@@ -1,37 +1,35 @@
 ---
-title: Agent SDK overview
-description: Build production AI agents with Thine Code as a library — query(), sessions, and subprocess runtime.
+title: Thine Agent SDK overview
+description: Build production AI agents with Thine Agent SDK — query(), sessions, and subprocess runtime through Thine Runtime.
 ---
 
-The Thine Agent SDK exposes the same agent loop as the CLI through a programmatic API. Use it to build automation, CI pipelines, custom UIs, and backend services — backed by **any configured LLM provider**.
+The Thine Agent SDK exposes the same agent loop as the `thine` CLI through a programmatic API. In the Thine stack, the **Thine IDE** and `thine-agent` extension use the SDK → Thine Runtime → your backend.
 
-This fork implements a real SDK (not a stub): `query()` streaming, session persistence, and subprocess isolation.
-
-## Install
-
-From the `thine-code/claude` package:
+## Thine IDE path (recommended)
 
 ```bash
-cd thine-code/claude
-bun install && bun run build
+thine-runtime ide doctor
+thine-runtime ide .
 ```
 
-TypeScript import path (after build):
+The in-editor agent uses Thine Agent SDK → `http://127.0.0.1:8787` → your provider. No vendor subscription required in the client.
 
-```typescript
-import { query } from './sdk/index.js'
-```
+## Standalone SDK
+
+For programmatic use outside the IDE, use the Thine Agent SDK from the [Thine IDE repo](https://github.com/thine-ai/thine-code) with `ANTHROPIC_BASE_URL` pointing at Thine Runtime.
+
+The SDK implements `query()` streaming, session persistence, and subprocess isolation.
 
 ## Minimal example
 
 ```typescript
-import { query } from '@anthropic-ai/claude-code-gemini/sdk'
+import { query } from '@thine/agent-sdk'
 
 for await (const message of query({
   prompt: 'Find and fix the bug in auth.ts',
   options: {
     cwd: '/path/to/repo',
-    permissionMode: 'bypassPermissions', // or 'default'
+    permissionMode: 'bypassPermissions',
     maxTurns: 10,
   },
 })) {
@@ -55,25 +53,24 @@ Set provider env vars before running (`GEMINI_API_KEY`, etc.) — see [Providers
   <Card title="Sessions" icon="folder" href="/en/agent-sdk/sessions">
     Resume, fork, and persist conversations by session ID.
   </Card>
-  <Card title="Claude Code features" icon="puzzle-piece" href="https://code.claude.com/docs/en/agent-sdk/claude-code-features">
-    CLAUDE.md, skills, hooks, MCP — loaded when enabled.
+  <Card title="Thine features" icon="puzzle-piece" href="/en/memory">
+    THINE.md, skills, hooks, MCP — loaded when enabled.
   </Card>
   <Card title="Multi-provider" icon="server" href="/en/providers">
-    Gemini, OpenAI, DeepSeek, and others via universal adapter.
+    Gemini, OpenAI, Ollama via Thine Runtime.
   </Card>
 </CardGroup>
 
-## Compare to upstream
+## Thine Agent SDK vs vendor SDK
 
-| | Thine SDK | Anthropic Agent SDK |
+| | Thine Agent SDK | Vendor-only SDK |
 | --- | --- | --- |
 | `query()` streaming | Yes | Yes |
 | Subprocess runtime | Yes | Yes |
-| Anthropic OAuth required | No | Often yes |
-| Universal LLM backends | Yes | Via Bedrock/Vertex |
+| Single-vendor subscription | No | Often yes |
+| Multi-provider backends | Yes | Limited |
 
 ## Next steps
 
 - [SDK Quickstart](/en/agent-sdk/quickstart)
 - [Sessions](/en/agent-sdk/sessions)
-- [Upstream TypeScript reference](https://code.claude.com/docs/en/agent-sdk/typescript)

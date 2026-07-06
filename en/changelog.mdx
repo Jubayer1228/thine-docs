@@ -1,20 +1,25 @@
 ---
 title: Changelog
-description: Release notes for Thine Code.
+description: Release notes for Thine and Thine Runtime.
 ---
 
-Thine Code releases track the upstream Claude Code fork version with a `-gemini` or Thine suffix (e.g. `2.1.88-gemini`).
+## Thine Runtime
 
-## Recent Thine changes
+Track releases on [thine.ai](https://thine.ai) when public distribution is live.
 
-See the [what's new](/en/whats-new) digest and [feature parity](/en/whats-new/feature-parity) matrix for fork-specific work:
+Recent themes:
 
-- Multi-provider LLM presets (Gemini, OpenAI, DeepSeek, Qwen, Kimi, GLM, Ollama)
-- Universal prompt caching
+- Thine gateway with multi-provider backends (Gemini, OpenAI, Ollama)
+- Research middleware (cache, repo graph, tool pruning, memory, escalation)
+- Thine dashboard telemetry at `/__thine`
+- `thine` CLI installer and `thine doctor`
+- Thine IDE integration via `thine-runtime ide`
+
+## Thine agent features
+
+See [What's new](/en/whats-new) and [Thine capabilities](/en/whats-new/feature-parity) for the full feature list:
+
+- Multi-provider LLM routing
 - `/goal`, `/cd`, `mcp login/logout`, `--plugin-url`
-- Thine branding and API-key auth
-- Agent SDK (`query()`, sessions, subprocess runtime)
-
-## Upstream changelog
-
-For Anthropic version history and cloud features, see the official [Claude Code changelog](https://code.claude.com/docs/en/changelog).
+- Thine Agent SDK (`query()`, sessions)
+- THINE.md project memory

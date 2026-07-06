@@ -1,15 +1,13 @@
 ---
-title: Project memory (CLAUDE.md)
-description: Give Thine Code persistent instructions with CLAUDE.md and auto memory.
+title: Project memory
+description: Give Thine persistent instructions with THINE.md, CLAUDE.md, and Thine auto memory.
 ---
 
-Thine Code reads **`CLAUDE.md`** files from your project hierarchy at session start — same as Claude Code.
-
-See upstream: [How Claude remembers your project](https://code.claude.com/docs/en/memory).
+Thine reads **project memory files** from your repository at session start. Use **`THINE.md`** for Thine-native projects, or **`CLAUDE.md`** for compatibility with existing repos.
 
 ## Quick example
 
-Create `CLAUDE.md` in your repo root:
+Create `THINE.md` (or `CLAUDE.md`) in your repo root:
 
 ```markdown
 # Project instructions
@@ -23,10 +21,18 @@ Create `CLAUDE.md` in your repo root:
 
 | Location | Scope |
 | --- | --- |
-| `./CLAUDE.md` | Project |
-| `~/.claude/CLAUDE.md` | User-global |
+| `./THINE.md` or `./CLAUDE.md` | Project |
+| `~/.thine/THINE.md` or `~/.claude/CLAUDE.md` | User-global |
 | Nested dirs | Loaded when tools access those paths |
+
+<Info>
+  Thine accepts both `THINE.md` and `CLAUDE.md`. New projects should prefer `THINE.md`.
+</Info>
+
+## Thine persistent memory (middleware)
+
+Thine Runtime can additionally inject `.thine/memory/MEMORY.md` summaries when `persistentMemory` is enabled in config. This is separate from project memory files — see [Middleware](/en/runtime/middleware).
 
 ## Auto memory
 
-When enabled, Thine can persist learnings across sessions (build commands, debugging notes). Behavior matches upstream auto memory where compiled in your build.
+When enabled in Thine settings, auto memory persists learnings across sessions (build commands, debugging notes).

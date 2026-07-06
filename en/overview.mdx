@@ -1,129 +1,165 @@
 ---
 title: Overview
-description: Thine Code is an agentic coding tool that reads your codebase, edits files, runs commands, and works with Gemini, OpenAI, DeepSeek, and other LLM providers.
+description: Thine is an agentic coding tool that reads your codebase, edits files, runs commands, and works with Gemini, OpenAI, Ollama, and other LLM providers.
 ---
 
-Thine Code is an AI-powered coding assistant built on the Claude Code agent loop. It understands your entire codebase and can work across multiple files and tools to get things done — while letting you choose **any supported LLM backend** instead of being locked to Anthropic.
+Thine is an AI-powered coding assistant that understands your entire codebase and works across multiple files and tools to help you build features, fix bugs, and automate development tasks. Choose **any supported LLM backend** — not a single vendor subscription.
 
-Thine Code is a fork of [Claude Code](https://code.claude.com/docs/en/overview) with multi-provider routing, API-key auth, and Thine branding. Most CLI features, skills, hooks, MCP, and the Agent SDK work the same way as upstream.
+```text
+Thine CLI (`thine`)              Thine Runtime (:8787)          Your model
+interactive agent + tools          gateway + middleware           (Gemini, OpenAI, …)
+        │                                  │                           │
+        │  Read, Edit, Bash, MCP, Agent    │  translate + optimize     │
+        └──────────────────────────────────┴───────────────────────────┘
+```
+
+Thine Runtime is the gateway and middleware layer. The **Thine agent** owns the tool loop, MCP, hooks, skills, and subagents.
+
+## Use Thine everywhere
+
+<Tabs>
+  <Tab title="Terminal" icon="terminal">
+    ```bash
+    curl -fsSL https://thine.ai/install.sh | bash
+    export GEMINI_API_KEY=your-key
+    thine doctor
+    thine -p "summarize this repo" --dangerously-skip-permissions
+    ```
+  </Tab>
+  <Tab title="VS Code" icon="puzzle-piece">
+    Install the **thine-agent** extension from the Thine IDE repo, connect to Thine Runtime on `:8787`.
+  </Tab>
+  <Tab title="IDE" icon="code">
+    ```bash
+    thine-runtime ide doctor
+    thine-runtime ide .
+    ```
+  </Tab>
+  <Tab title="Web" icon="globe">
+    Dashboard: `http://127.0.0.1:8787/__thine` — full web studio coming soon.
+  </Tab>
+</Tabs>
+
+[Full platform guide →](/en/platforms)
 
 ## Get started
 
-Choose your provider and install the CLI:
-
 <Steps>
-  <Step title="Install Thine Code">
-    Build from source or install your team's packaged binary:
-
+  <Step title="Install Thine">
     ```bash
-    git clone https://github.com/thine-ai/thine-code.git
-    cd thine-code/claude
-    bun install && bun run build
+    curl -fsSL https://thine.ai/install.sh | bash
     ```
 
-    The CLI binary is `dist/cli.mjs`. Alias it as `thine` or `claude` during the transition period.
+    Early access without a public repo: host `install.sh` + a release tarball (`npm run package:release`) and pass `THINE_ARTIFACT_URL`. See [Quickstart](/en/quickstart).
+
+    Puts `thine` and `thine-runtime` in `~/.local/bin` and creates `~/.config/thine-runtime/config.json`.
   </Step>
   <Step title="Set your API key">
     ```bash
-    export CLAUDE_CODE_USE_GEMINI=1
     export GEMINI_API_KEY=your-key
-    export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
+    # or for Codex profile:
+    export OPENAI_API_KEY=your-key
     ```
 
-    See [Providers](/en/providers) for OpenAI, DeepSeek, Qwen, Kimi, GLM, and Ollama.
+    See [Providers](/en/providers) for all backends.
   </Step>
-  <Step title="Start a session">
+  <Step title="Verify">
+    ```bash
+    thine doctor
+    ```
+  </Step>
+  <Step title="Run on any project">
     ```bash
     cd your-project
-    node /path/to/thine-code/claude/dist/cli.mjs
-    ```
-
-    Or use `-p` for non-interactive output:
-
-    ```bash
-    node dist/cli.mjs -p "explain this repo"
+    thine -p "Read README.md and summarize this repo" --dangerously-skip-permissions
     ```
   </Step>
 </Steps>
 
 <Info>
-  Thine Code uses **API keys** instead of Anthropic OAuth. Set `GEMINI_API_KEY`, `OPENAI_API_KEY`, or another provider key — see [Quickstart](/en/quickstart).
+  Thine uses **your provider API keys** (Gemini, OpenAI, etc.) — routed through Thine Runtime at `http://127.0.0.1:8787`.
 </Info>
 
 ## What you can do
 
-Here are some of the ways you can use Thine Code:
-
 <AccordionGroup>
   <Accordion title="Build features and fix bugs" icon="hammer">
-    Describe what you want in plain language. Thine Code plans the approach, writes code across multiple files, and verifies it works.
+    Describe what you want in plain language. Thine plans the approach, writes code across multiple files, and verifies it works.
 
     ```bash
-    thine -p "fix the auth middleware bug and add a regression test"
+    thine -p "fix the auth middleware bug and add a regression test" --dangerously-skip-permissions
     ```
   </Accordion>
 
   <Accordion title="Use any LLM provider" icon="sparkles">
-    Route the same agent loop through Gemini, OpenAI, DeepSeek, Qwen, Kimi, GLM, or a local Ollama instance. Model aliases like `sonnet` map to your configured backend.
+    Route the same agent loop through Gemini, OpenAI (including Codex/GPT-5), Ollama, or any OpenAI-compatible API.
 
-    [Providers guide →](/en/providers)
+    [Providers →](/en/providers)
   </Accordion>
 
-  <Accordion title="Connect your tools with MCP" icon="plug">
-    The [Model Context Protocol (MCP)](/en/mcp) connects Thine Code to external data sources — databases, APIs, issue trackers, and custom tools.
+  <Accordion title="Thine middleware" icon="bolt">
+    Token-efficient gateway hooks — instruction cache, repository graph, tool pruning, persistent memory, model escalation, and more.
 
-    Authenticate HTTP/SSE servers from the shell:
+    [Middleware →](/en/runtime/middleware)
+  </Accordion>
+
+  <Accordion title="Thine dashboard" icon="chart-line">
+    Session-grouped logs, per-turn token breakdown, middleware notes, and cost analytics at `http://127.0.0.1:8787/__thine`.
+
+    [Dashboard →](/en/runtime/dashboard)
+  </Accordion>
+
+  <Accordion title="Thine IDE" icon="code">
+    Open the Thine editor with the agent composer — Thine Agent SDK → runtime → your model.
 
     ```bash
-    thine mcp login my-server
+    thine-runtime ide doctor
+    thine-runtime ide .
     ```
   </Accordion>
 
-  <Accordion title="Customize with CLAUDE.md, skills, and hooks" icon="sliders">
-    [`CLAUDE.md`](/en/memory) gives Thine persistent project instructions. [Skills](/en/skills) package repeatable workflows. [Hooks](/en/hooks-guide) run shell commands before or after agent actions.
+  <Accordion title="MCP, skills, and hooks" icon="plug">
+    Connect databases, APIs, and custom tools. Package repeatable workflows as skills. Automate with shell hooks.
+
+    [MCP](/en/mcp) · [Skills](/en/skills) · [Hooks](/en/hooks-guide)
   </Accordion>
 
-  <Accordion title="Run agents and work toward a goal" icon="users">
-    Spawn [subagents](/en/subagents) for parallel work. Use [`/goal`](/en/goal) to set a completion condition and let the agent keep working until tests pass, lint is clean, or your criteria hold.
-  </Accordion>
-
-  <Accordion title="Pipe, script, and automate with the CLI" icon="terminal">
-    Thine Code follows the Unix philosophy — pipe logs, run in CI, chain with git:
-
+  <Accordion title="Pipe, script, and automate" icon="terminal">
     ```bash
-    git diff main --name-only | thine -p "review these files for security issues"
+    git diff main --name-only | thine -p "review these files for security issues" --dangerously-skip-permissions
     ```
 
-    See the [CLI reference](/en/cli-reference) for all commands and flags.
+    [CLI reference →](/en/cli-reference)
   </Accordion>
 </AccordionGroup>
 
-## Thine vs Claude Code
+## Thine vs generic gateways
 
-| Capability | Thine Code | Claude Code (Anthropic) |
+| Capability | Thine | Generic OpenAI proxy |
 | --- | --- | --- |
-| Agent loop, tools, skills, hooks | Yes | Yes |
-| MCP, plugins, subagents | Yes | Yes |
-| Multi-provider LLM (Gemini, OpenAI, …) | Yes | Third-party via Bedrock/Vertex only |
-| Anthropic OAuth / claude.ai subscription | Optional fallback | Primary |
-| Artifacts, Routines, cloud ultrareview | No (cloud-only upstream) | Yes |
-| Agent SDK (`query()`, sessions) | Yes | Yes |
-
-See [Feature parity](/en/whats-new/feature-parity) for a detailed audit against upstream [what's new](https://code.claude.com/docs/en/whats-new).
+| Full agent loop + tools | Yes | Depends on client |
+| MCP, skills, hooks, subagents | Yes | Client-dependent |
+| Multi-provider backends | Yes | Usually single vendor |
+| Research middleware | Yes | No |
+| Session telemetry dashboard | Yes | Rare |
+| Workspace symbol index | Yes | No |
 
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Quickstart" icon="rocket" href="/en/quickstart">
-    Install, configure a provider, and run your first task.
+  <Card title="Use Thine everywhere" icon="layer-group" href="/en/platforms">
+    Terminal, VS Code, IDE, and Web.
   </Card>
-  <Card title="Providers" icon="server" href="/en/providers">
-    Gemini, OpenAI, DeepSeek, Qwen, Kimi, GLM, Ollama.
+  <Card title="Quickstart" icon="rocket" href="/en/quickstart">
+    Install, configure a backend, run your first task.
+  </Card>
+  <Card title="Thine gateway" icon="server" href="/en/runtime/gateway">
+    API surface, env vars, backend types.
+  </Card>
+  <Card title="Configuration" icon="sliders" href="/en/runtime/configuration">
+    `config.json`, model aliases, telemetry.
   </Card>
   <Card title="CLI reference" icon="terminal" href="/en/cli-reference">
-    Commands, flags, and examples.
-  </Card>
-  <Card title="Agent SDK" icon="code" href="/en/agent-sdk/overview">
-    Build agents with `query()` and sessions.
+    `thine`, `thine-runtime`, flags, and slash commands.
   </Card>
 </CardGroup>

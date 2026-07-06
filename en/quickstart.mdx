@@ -1,82 +1,105 @@
 ---
 title: Quickstart
-description: Install Thine Code, configure an LLM provider, and complete your first agent task.
+description: Install Thine, configure a backend, and complete your first agent task.
 ---
 
-Welcome to Thine Code! This guide gets you from zero to a working session in a few minutes.
+Welcome to Thine! This guide gets you from zero to a working session in a few minutes.
 
 ## Prerequisites
 
-- **Node.js 18+** or **Bun** for building from source
+- **Node.js 18+**
 - An API key from at least one provider ([Gemini](https://aistudio.google.com/apikey), [OpenAI](https://platform.openai.com/api-keys), etc.)
 - A git repository or project directory to work in
 
-## 1. Build the CLI
+## 1. Install Thine
+
+Thine Runtime is distributed privately until [thine.ai](https://thine.ai) hosts the official installer. Pick one path:
+
+**Official one-liner (coming soon):**
 
 ```bash
-git clone https://github.com/thine-ai/thine-code.git
-cd thine-code/claude
-bun install
-PATH="$HOME/.bun/bin:$PATH" bun run build
+curl -fsSL https://thine.ai/install.sh | bash
 ```
 
-The built CLI is at `claude/dist/cli.mjs`.
+**Release tarball — recommended for early access (no public repo):**
 
-<Tip>
-  Add an alias for convenience:
-
-  ```bash
-  alias thine='node /path/to/thine-code/claude/dist/cli.mjs'
-  ```
-</Tip>
-
-## 2. Configure Gemini (recommended)
+Your team builds and uploads a release:
 
 ```bash
-export CLAUDE_CODE_USE_GEMINI=1
+npm run package:release   # creates dist/thine-runtime-<version>.tar.gz
+```
+
+Host `scripts/install.sh` and the tarball on any HTTPS static host, then share:
+
+```bash
+curl -fsSL https://YOUR_CDN/install.sh | \
+  THINE_ARTIFACT_URL=https://YOUR_CDN/releases/thine-runtime-0.1.0.tar.gz bash
+```
+
+**Private git (SSH access required):**
+
+```bash
+curl -fsSL https://YOUR_CDN/install.sh | \
+  THINE_REPO_URL=git@github.com:your-org/thine-runtime.git bash
+```
+
+**Local checkout (developers):**
+
+```bash
+cd thine-runtime
+./scripts/install.sh                  # Gemini profile (default)
+./scripts/install.sh --backend codex  # OpenAI Codex mini profile
+```
+
+Install puts `thine` and `thine-runtime` in `~/.local/bin` and creates `~/.config/thine-runtime/config.json`.
+
+## 2. Set your API key
+
+**Gemini (default profile):**
+
+```bash
 export GEMINI_API_KEY=your-key-here
-export GEMINI_MODEL=gemini-2.5-flash          # optional
-export CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1
-export CLAUDE_CODE_SIMPLE=1                   # optional: lean external build
 ```
 
-Optional: enable web search on universal providers:
+**OpenAI / Codex (if you used `--backend codex`):**
 
 ```bash
-export TAVILY_API_KEY=your-tavily-key
+export OPENAI_API_KEY=your-key-here
 ```
 
-## 3. Verify auth
+Add the export to `~/.zshrc` so new shells pick it up.
+
+## 3. Verify installation
 
 ```bash
-node dist/cli.mjs auth status
+thine doctor
 ```
 
-Expected output:
+Expected: Thine Runtime reachable on `:8787`, backend ping OK, middleware routes listed.
 
-```
-Auth: Thine (Gemini API key)
+```bash
+curl -s http://127.0.0.1:8787/health | jq .
 ```
 
 ## 4. Run your first task
 
-**Interactive session** (default):
+**One-shot (print mode):**
 
 ```bash
 cd ~/your-project
-node /path/to/dist/cli.mjs
+thine -p "list the top-level directories and summarize the project" --dangerously-skip-permissions
 ```
 
-**Print mode** (non-interactive, great for scripts):
+**Interactive REPL:**
 
 ```bash
-node dist/cli.mjs -p "list the top-level directories and summarize the project"
+thine
 ```
 
-**With permissions skipped** (sandboxes only):
+**Gateway passthrough only (no Thine middleware):**
 
 ```bash
-node dist/cli.mjs -p --dangerously-skip-permissions "run the test suite and report failures"
+thine --no-middleware -p "reply with exactly: passthrough-ok" --dangerously-skip-permissions
 ```
 
 ## 5. Try slash commands
@@ -89,30 +112,39 @@ In an interactive session:
 | `/config` | View or change settings |
 | `/model` | Switch model alias |
 | `/goal <condition>` | Keep working until condition holds |
-| `/cd <path>` | Change working directory mid-session |
 | `/review` | Code review workflow |
 
-## Other providers
+## Manual two-terminal setup
 
-Set `CLAUDE_CODE_LLM_PROVIDER` instead of `CLAUDE_CODE_USE_GEMINI`:
+Terminal 1 — start Thine Runtime:
 
 ```bash
-# OpenAI
-export CLAUDE_CODE_LLM_PROVIDER=openai
-export OPENAI_API_KEY=sk-...
-
-# DeepSeek (auto-detected from key)
-export DEEPSEEK_API_KEY=sk-...
-
-# GLM (Zhipu)
-export CLAUDE_CODE_LLM_PROVIDER=glm
-export ZHIPU_API_KEY=...
+thine-runtime start
 ```
 
-Full table: [Providers](/en/providers).
+Terminal 2 — launch the Thine agent:
+
+```bash
+thine -p "summarize this repo" --dangerously-skip-permissions
+```
+
+`thine` starts the gateway automatically if it is not already running.
+
+## Open the Thine dashboard
+
+With Postgres telemetry enabled in config:
+
+```
+http://127.0.0.1:8787/__thine
+```
+
+Default auth: `Authorization: Bearer thine`
+
+See [Dashboard](/en/runtime/dashboard) for setup.
 
 ## Next steps
 
-- [How Thine Code works](/en/how-it-works) — agent loop, tools, context
-- [Settings](/en/settings) — permissions, hooks, CLAUDE.md
-- [Agent SDK](/en/agent-sdk/quickstart) — programmatic `query()` API
+- [How Thine works](/en/how-it-works) — architecture and agent loop
+- [Configuration](/en/runtime/configuration) — `config.json` reference
+- [Providers](/en/providers) — Gemini, OpenAI, Ollama, and more
+- [Middleware](/en/runtime/middleware) — token-efficient optimizations

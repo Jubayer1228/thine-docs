@@ -1,9 +1,45 @@
 ---
 title: Environment variables
-description: Environment variables that control Thine Code behavior and LLM routing.
+description: Environment variables for Thine Runtime gateway and Thine.
 ---
 
-## Provider selection
+## Thine Runtime gateway
+
+Set automatically by `thine` and `thine-runtime launch`:
+
+| Variable | Description |
+| --- | --- |
+| `ANTHROPIC_BASE_URL` | Gateway URL (default `http://127.0.0.1:8787`) |
+| `ANTHROPIC_AUTH_TOKEN` | Gateway auth token (default `thine`) |
+| `ANTHROPIC_API_KEY` | Empty string — gateway uses provider keys |
+| `THINE_RUNTIME_CONFIG` | Override config file path |
+| `THINE_BIN` | Override `thine` binary path |
+| `THINE_DISABLE_AUTO_ESCALATE` | `1` → disable model escalation middleware |
+| `THINE_DISABLE_AUTO_INDEX` | `1` → skip launch-time workspace indexing |
+| `THINE_AUTO_ESCALATE_MODEL` | Override escalation target model |
+| `THINE_AUTO_ESCALATE_AFTER_TURNS` | Turns before escalation (default 3) |
+| `THINE_TELEMETRY_POSTGRES_URL` | Override Postgres URL for dashboard |
+| `THINE_BENCHMARK_MIDDLEWARE` | JSON merge into middleware flags |
+| `THINE_RUNTIME_DEBUG` | `1` → log middleware notes to stderr |
+
+## Provider API keys (runtime)
+
+| Variable | Backend |
+| --- | --- |
+| `GEMINI_API_KEY` | `backend.type: gemini` |
+| `OPENAI_API_KEY` | `openai-compatible`, `openai-responses` |
+| `ANTHROPIC_API_KEY` | `anthropic-forward` only |
+
+Keys are read from the environment — not stored in `config.json`.
+
+---
+
+## Thine (upstream)
+
+Many Thine env vars apply unchanged.
+## Provider selection (legacy Thine fork only)
+
+These apply to the legacy legacy Thine fork, not the runtime gateway path:
 
 | Variable | Description |
 | --- | --- |
@@ -43,4 +79,3 @@ description: Environment variables that control Thine Code behavior and LLM rout
 | --- | --- |
 | `CLAUDE_CODE_GEMINI_USE_OPENAI` | Force OpenAI-compat Gemini endpoint |
 
-Full upstream list: [Environment variables](https://code.claude.com/docs/en/env-vars) (many apply unchanged).

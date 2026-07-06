@@ -1,0 +1,78 @@
+---
+title: Thine gateway
+description: Anthropic-compatible API surface, environment variables, and backend types for Thine Runtime.
+---
+
+Thine Runtime exposes an **Anthropic-compatible API** at `:8787`. The Thine agent talks to this gateway; Thine Runtime translates to Gemini, OpenAI, or other backends.
+
+```text
+Thine agent
+    │  POST /v1/messages
+    │  GET  /v1/models
+    │  POST /v1/messages/count_tokens
+    ▼
+Thine Runtime :8787          API façade + middleware
+    │  model aliases
+    │  request translation
+    ▼
+Your backend                 Provider API
+```
+
+## Environment
+
+`thine` and `thine-runtime launch` set these automatically:
+
+```bash
+export ANTHROPIC_BASE_URL=http://127.0.0.1:8787
+export ANTHROPIC_AUTH_TOKEN=thine
+export ANTHROPIC_API_KEY=""
+export GEMINI_API_KEY=...        # or OPENAI_API_KEY
+```
+
+## Config fields
+
+| Field | Purpose |
+| --- | --- |
+| `defaultModel` | Backend model when an unknown id is sent |
+| `backend.type` | `gemini`, `openai-compatible`, `openai-responses`, `ollama`, `anthropic-forward` |
+| `backend.baseUrl` | Provider API base URL |
+| `claudeCode.modelAliases` | Map Thine model names to backend models |
+| `claudeCode.haikuModel` | Subagents / background |
+| `claudeCode.escalationModel` | Auto-escalate on stalled knowledge-read tasks |
+| `claudeCode.models` | Optional list for `GET /v1/models` |
+
+## Backend types
+
+| `backend.type` | Upstream wire | Use when |
+| --- | --- | --- |
+| `gemini` | OpenAI chat completions | Gemini via Google OpenAI-compat |
+| `openai-compatible` | OpenAI chat completions | OpenAI, Azure, LiteLLM, etc. |
+| `openai-responses` | OpenAI `/v1/responses` | Codex / GPT-5 (`gpt-5.1-codex-mini`, etc.) |
+| `ollama` | Native `/v1/messages` | Local Ollama |
+| `anthropic-forward` | Native `/v1/messages` | Anthropic or Anthropic-native proxy |
+
+## API surface
+
+| Endpoint | Status |
+| --- | --- |
+| `POST /v1/messages` | Yes — stream + non-stream |
+| `GET /v1/models` | Yes — alias list from config |
+| `POST /v1/messages/count_tokens` | Yes — token estimate |
+| `GET /health` | Yes |
+| `GET /__thine` | Yes — Thine dashboard (requires Postgres) |
+
+Agent features (tools, bash, MCP, skills, subagents) run in the **Thine agent** — Thine Runtime is gateway + middleware only.
+
+## Quick test
+
+```bash
+thine-runtime start
+curl -s http://127.0.0.1:8787/v1/models -H "Authorization: Bearer thine" | jq .
+thine -p "say gateway-ok" --dangerously-skip-permissions
+```
+
+## See also
+
+- [Configuration](/en/runtime/configuration)
+- [Providers](/en/providers)
+- [Quickstart](/en/quickstart)

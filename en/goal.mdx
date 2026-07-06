@@ -1,46 +1,31 @@
 ---
-title: Keep Claude working toward a goal
-description: Set a completion condition with /goal and Thine Code keeps working across turns until the condition holds.
+title: Keep Thine working toward a goal
+description: Set a completion condition and let Thine keep working until tests pass, lint is clean, or your criteria hold.
 ---
 
-The `/goal` command sets a **completion condition**. After each turn, a fast model evaluates whether the condition is met. If not, Thine automatically starts another turn instead of handing control back.
-
-Based on upstream [Claude Code /goal](https://code.claude.com/docs/en/goal).
+The `/goal` command sets a completion condition. Thine keeps iterating until the condition is satisfied or limits are hit.
 
 ## Usage
 
-```text
-/goal all tests in test/auth pass and the lint step is clean
+In an interactive session:
+
+```
+/goal all tests pass
+/goal lint is clean and types check
 ```
 
-Other forms:
+## With print mode
 
-```text
-/goal status          # show active goal
-/goal clear           # stop auto-continue
+```bash
+thine -p "/goal npm test exits 0 — fix any failures" --dangerously-skip-permissions
 ```
-
-## How it works
-
-1. You set a verifiable end state (tests, lint, migration complete, etc.)
-2. Thine works a turn as usual
-3. A lightweight evaluator checks the transcript against your condition
-4. If not met, a `<goal>` continuation prompt is queued automatically (up to 100 turns)
-5. When met, the goal clears and you see a completion message
-
-## Works in
-
-- Interactive REPL
-- Print mode (when goal is set via `/goal` in a resumed session)
-- Any universal LLM provider (evaluator uses your configured fast model)
 
 ## Tips
 
-- Prefer **objective** conditions: "all tests pass", "typecheck clean", "file X exports function Y"
-- Run verification yourself — the evaluator reads the transcript, not live process state
-- Use `/goal clear` if the agent loops on an impossible condition
+- Be specific about what "done" means (exit codes, file paths, command output).
+- Combine with `--max-turns` to cap iteration count in scripts.
 
 ## See also
 
-- [`/loop`](/en/whats-new) — recurring prompts on an interval
+- [Agents](/en/agents)
 - [Best practices](/en/best-practices)

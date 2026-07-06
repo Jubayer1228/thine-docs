@@ -1,0 +1,72 @@
+---
+title: Research middleware
+description: Token-efficient gateway hooks — instruction cache, repository graph, tool pruning, memory, and auto-escalation.
+---
+
+Middleware runs in the Thine Runtime gateway on every `POST /v1/messages` request. It optimizes LLM input **without modifying the Thine CLI**.
+
+Disable with `thine --no-middleware`, route `/official/v1/messages`, or set all flags to `false` in config.
+
+## Flags
+
+| Flag | Phase | Effect |
+| --- | --- | --- |
+| `instructionCache` | 1 | Fingerprints system+tools; tracks cache hits in telemetry |
+| `kvCache` | 1 | Sends `prompt_cache_key` to OpenAI/Codex for provider prefix caching |
+| `repositoryGraph` | 2 | Injects top matching symbols from `.thine/index/workspace.json` |
+| `toolPruning` | 2 | Sends core tools + task-relevant subset (not all tools every turn) |
+| `persistentMemory` | 3 | Injects `.thine/memory/MEMORY.md` summaries |
+| `toolSchemaDiet` | 1 | Short descriptions + slim JSON schemas (recent tools keep full schema) |
+| `contextInjectionOnce` | 1 | Repo-graph + memory only on fresh turns (skipped after tool loop starts) |
+| `toolResultCompaction` | 1 | Compacts old large `tool_result` bodies (recent 8 messages untouched) |
+| `autoTune` | — | Adjusts middleware based on session telemetry |
+| `backendAlignment` | — | Aligns model routing with backend capabilities |
+
+## Task-shaped hints
+
+On knowledge-read tasks (e.g. "read files first, no edits"), middleware injects hints and may:
+
+- Skip persistent memory / repository graph on continuation turns (injected once)
+- Auto-escalate to `claudeCode.escalationModel` after N turns without repo exploration
+- Inject a Grep-first hint after consecutive Read errors
+
+## Workspace index
+
+Build the symbol index used by `repositoryGraph`:
+
+```bash
+thine index              # build if missing or stale
+thine index --force      # rebuild
+```
+
+Index is written to `.thine/index/workspace.json`. Auto-index runs on `thine` launch unless `THINE_DISABLE_AUTO_INDEX=1`.
+
+## Efficient profile
+
+Enable all optimizations:
+
+```bash
+export THINE_RUNTIME_CONFIG=config/thine-runtime.efficient.example.json
+thine-runtime start
+```
+
+Or use `./scripts/install.sh` which applies the product defaults profile.
+
+## Passthrough mode
+
+Compare with middleware off:
+
+```bash
+thine --no-middleware -p "your task" --dangerously-skip-permissions
+```
+
+Or hit `http://127.0.0.1:8787/official/v1/messages` directly.
+
+## Implementation
+
+Pipeline source: `src/middleware/pipeline.ts` in your Thine Runtime install.
+
+## See also
+
+- [Dashboard](/en/runtime/dashboard) — middleware notes per turn in telemetry
+- [Configuration](/en/runtime/configuration) — enable/disable flags

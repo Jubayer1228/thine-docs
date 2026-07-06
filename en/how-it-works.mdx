@@ -1,28 +1,75 @@
 ---
-title: How Thine Code works
-description: The agentic loop, built-in tools, and how Thine Code interacts with your project.
+title: How Thine works
+description: The Thine agent loop, Thine Runtime gateway, and how they interact with your project.
 ---
 
-Thine Code uses the same **agentic loop** as Claude Code. See the upstream guide for full detail: [How Claude Code works](https://code.claude.com/docs/en/how-claude-code-works).
+Thine uses a proven **agentic loop**: read your codebase, call tools, edit files, run commands, and iterate until the task is done. **Thine Runtime** sits between the Thine agent and your LLM backend — translating requests, applying middleware, and recording telemetry.
 
-## Agent loop (summary)
+## Stack
 
-1. **User prompt** enters the session (REPL, `-p`, or SDK `query()`)
-2. **System prompt** combines defaults, `CLAUDE.md`, skills context, and tool definitions
-3. **Model** returns text and/or tool calls
-4. **Tools** execute (Read, Edit, Bash, MCP, Agent, …) and results feed back
-5. Loop continues until the model stops or limits hit (`--max-turns`, budget, `/goal` satisfied)
+```text
+┌─────────────────────────────────────────────────────────────────┐
+│  Terminal: `thine`                IDE: `thine-runtime ide`       │
+│  Thine agent (REPL + tools)       Thine IDE + agent composer    │
+└────────────────────────────┬────────────────────────────────────┘
+                             │  POST /v1/messages
+                             │  GET  /v1/models
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  Thine Runtime (:8787)                                           │
+│  · Anthropic-compatible API façade                               │
+│  · Model alias mapping (thine model names → backend models)      │
+│  · Thine middleware (cache, repo graph, tool pruning, …)           │
+│  · Telemetry → Postgres → /__thine dashboard                     │
+└────────────────────────────┬────────────────────────────────────┘
+                             │  translate to provider format
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│  Backend: Gemini · OpenAI · openai-responses · Ollama · …       │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-## Universal LLM layer
+## Agent loop
 
-For Thine, API calls go through `services/api/universalLlm/` which translates between Anthropic Messages format and provider APIs (Gemini native, OpenAI chat completions, etc.).
+1. **User prompt** enters via REPL, `-p`, or Thine Agent SDK `query()`
+2. **Thine agent** assembles system prompt, project memory, skills, and tool definitions
+3. **Request** hits Thine Runtime
+4. **Middleware** may inject repo symbols, memory, prune tools, escalate model, etc.
+5. **Gateway** translates to provider API and streams the response back
+6. **Tools** execute (Read, Edit, Bash, MCP, Agent, …)
+7. Loop continues until the model stops or limits hit
 
-## Context window
+## What lives where
 
-Long sessions **compact** automatically. Use `/compact` manually or `/rewind` to restore earlier file state.
+| Layer | Component |
+| --- | --- |
+| Agent loop, tools, bash, git | Thine agent |
+| MCP, skills, hooks, plugins | Thine agent |
+| `/v1/messages` gateway | Thine Runtime |
+| Provider translation | Thine Runtime |
+| Token middleware | Thine Runtime |
+| Telemetry dashboard | Thine Runtime |
+
+## Middleware routes
+
+| Route | Middleware |
+| --- | --- |
+| `/v1/messages` | Thine profile (default) |
+| `/official/v1/messages` | Off — passthrough only |
+| `X-Thine-Middleware: off` header | Off for that request |
+
+## Workspace index
+
+On launch, Thine can build `.thine/index/workspace.json` for repository graph injection:
+
+```bash
+thine index              # build if missing or stale
+thine index --force      # rebuild
+```
 
 ## Next steps
 
-- [Providers](/en/providers)
-- [Permission modes](/en/permission-modes)
-- [Prompt caching](/en/prompt-caching)
+- [Thine gateway](/en/runtime/gateway) — API surface and env vars
+- [Middleware](/en/runtime/middleware) — optimization flags
+- [Configuration](/en/runtime/configuration) — `config.json`
+- [Providers](/en/providers) — backend types

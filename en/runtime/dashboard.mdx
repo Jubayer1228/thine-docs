@@ -1,0 +1,93 @@
+---
+title: Telemetry dashboard
+description: Session-grouped logs, token breakdown, middleware notes, and cost analytics at /__thine.
+---
+
+The telemetry dashboard at `http://127.0.0.1:8787/__thine` shows gateway traffic grouped by Thine session — multiple turns from one task appear under a single session row.
+
+## Requirements
+
+Telemetry needs **both** in `~/.config/thine-runtime/config.json`:
+
+```json
+"telemetry": {
+  "enabled": true,
+  "postgresUrl": "postgresql://thine:thine@127.0.0.1:5432/thine_runtime",
+  "captureBodies": true,
+  "maxBodyBytes": 512000,
+  "dashboardPath": "/__thine"
+}
+```
+
+If `postgresUrl` is missing, `/health` reports `"telemetry": false` and the dashboard returns 404.
+
+<Warning>
+  Benchmark runs that set `THINE_RUNTIME_CONFIG` to a config without `postgresUrl` will disable the dashboard. Restart with your home config:
+
+  ```bash
+  env -u THINE_RUNTIME_CONFIG thine-runtime start
+  ```
+</Warning>
+
+## Access
+
+```
+http://127.0.0.1:8787/__thine
+```
+
+Default auth header: `Authorization: Bearer thine` (matches `authToken` in config).
+
+Set a custom token in the dashboard UI — stored in `localStorage` as `thine-dashboard-token`.
+
+## What you see
+
+| View | Content |
+| --- | --- |
+| **Sessions** | Grouped by `session_id` — one Thine task, many gateway turns |
+| **Logs** | Per-request traffic with input/output tokens |
+| **Session detail** | Per-turn models, tool calls, middleware notes |
+| **Usage** | Token trends over time |
+| **Cost** | Estimated spend by model |
+| **Tuning** | Middleware recommendations from telemetry |
+
+## Middleware notes
+
+Each turn may include notes like:
+
+- `repositoryGraph: injected 12 symbols`
+- `modelEscalation: gpt-5.1-codex-mini → gpt-5.5`
+- `readErrorLoop: consecutive Read errors — suggest Grep`
+- `instructionCache: hit (abc123…)`
+- `taskHint: knowledge-read`
+
+## API endpoints
+
+All under `/__thine/api/` with Bearer auth:
+
+| Endpoint | Description |
+| --- | --- |
+| `GET /api/sessions` | Session list |
+| `GET /api/sessions/:id/turns` | Turns + analysis for a session |
+| `GET /api/logs` | Raw request log |
+| `GET /api/analytics/usage` | Usage over N days |
+| `GET /api/analytics/cost` | Cost over N days |
+| `GET /api/analytics/recommendations` | Middleware tuning suggestions |
+| `GET /api/stats` | Aggregate stats |
+
+## Verify telemetry is on
+
+```bash
+curl -s http://127.0.0.1:8787/health | jq .telemetry
+# true
+```
+
+Startup log should include:
+
+```
+Dashboard: http://127.0.0.1:8787/__thine
+```
+
+## See also
+
+- [Configuration](/en/runtime/configuration) — telemetry block
+- [Middleware](/en/runtime/middleware) — what the notes mean

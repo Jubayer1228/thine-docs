@@ -1,0 +1,143 @@
+---
+title: Configuration
+description: thine-runtime config.json — listen address, backends, model aliases, middleware, and IDE settings.
+---
+
+Main config file: `~/.config/thine-runtime/config.json`
+
+Override with `THINE_RUNTIME_CONFIG` or project-local `./thine-runtime.json`.
+
+Example configs ship with the runtime under `config/` (see your install tree or release tarball).
+
+| File | Profile |
+| --- | --- |
+| `thine-runtime.gemini.example.json` | Gemini default |
+| `thine-runtime.openai.example.json` | OpenAI chat |
+| `thine-runtime.codex.example.json` | OpenAI Codex / GPT-5 |
+| `thine-runtime.efficient.example.json` | All middleware on |
+| `thine-runtime.telemetry.example.json` | Postgres dashboard |
+
+## Minimal Gemini config
+
+```json
+{
+  "listen": "127.0.0.1:8787",
+  "authToken": "thine",
+  "defaultModel": "gemini-2.5-flash",
+  "backend": {
+    "type": "gemini",
+    "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai"
+  }
+}
+```
+
+`GEMINI_API_KEY` is read from the environment (not stored in config).
+
+## Codex / GPT-5 config
+
+```json
+{
+  "listen": "127.0.0.1:8787",
+  "authToken": "thine",
+  "defaultModel": "gpt-5.1-codex-mini",
+  "backend": {
+    "type": "openai-responses",
+    "baseUrl": "https://api.openai.com/v1"
+  },
+  "claudeCode": {
+    "haikuModel": "gpt-5.1-codex-mini",
+    "sonnetModel": "gpt-5.1-codex-mini",
+    "escalationModel": "gpt-5.5",
+    "escalateAfterTurns": 3,
+    "modelAliases": {
+      "claude-sonnet-4-6": "gpt-5.1-codex-mini",
+      "gpt-5.5": "gpt-5.5"
+    }
+  }
+}
+```
+
+`OPENAI_API_KEY` from environment.
+
+## Model aliases
+
+Thine sends model names like `claude-sonnet-4-6`. Map them to your backend:
+
+```json
+"claudeCode": {
+  "haikuModel": "gpt-4o-mini",
+  "sonnetModel": "gpt-4o",
+  "opusModel": "gpt-4o",
+  "escalationModel": "gpt-5.5",
+  "escalateAfterTurns": 3,
+  "autoEscalate": true,
+  "modelAliases": {
+    "claude-sonnet-4-6": "gpt-4o",
+    "claude-haiku-4-20250514": "gpt-4o-mini"
+  },
+  "models": ["gpt-4o", "gpt-4o-mini", "claude-sonnet-4-6"]
+}
+```
+
+## Middleware block
+
+```json
+"middleware": {
+  "instructionCache": true,
+  "repositoryGraph": true,
+  "persistentMemory": true,
+  "kvCache": true,
+  "toolPruning": true,
+  "toolSchemaDiet": true,
+  "contextInjectionOnce": true,
+  "toolResultCompaction": true,
+  "autoTune": true,
+  "backendAlignment": true
+}
+```
+
+See [Middleware](/en/runtime/middleware) for each flag.
+
+Disable per-session: `thine --no-middleware` or route `/official/v1/messages`.
+
+## Telemetry
+
+```json
+"telemetry": {
+  "enabled": true,
+  "postgresUrl": "postgresql://thine:thine@127.0.0.1:5432/thine_runtime",
+  "captureBodies": true,
+  "maxBodyBytes": 512000,
+  "dashboardPath": "/__thine"
+}
+```
+
+Both `enabled: true` **and** a `postgresUrl` are required for the dashboard. See [Dashboard](/en/runtime/dashboard).
+
+## IDE settings
+
+For `thine-runtime ide` (Thine IDE):
+
+```json
+"ide": {
+  "thineCodeRoot": "../Thine-code",
+  "agentProjectsRoot": "../thine-agent-projects",
+  "userDataDir": "~/.thine-runtime-ide",
+  "agent": {
+    "backend": "claude-code-sdk",
+    "maxTurns": 80
+  }
+}
+```
+
+## Environment overrides
+
+| Variable | Effect |
+| --- | --- |
+| `THINE_RUNTIME_CONFIG` | Override config file path |
+| `THINE_BENCHMARK_MIDDLEWARE` | JSON merge into middleware flags |
+| `THINE_DISABLE_AUTO_ESCALATE=1` | Disable model escalation |
+| `THINE_DISABLE_AUTO_INDEX=1` | Skip launch-time workspace indexing |
+| `THINE_TELEMETRY_POSTGRES_URL` | Override Postgres URL |
+
+Full list: [Environment variables](/en/env-vars).

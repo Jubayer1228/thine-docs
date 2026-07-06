@@ -1,11 +1,13 @@
 {
   "name": "thine-docs",
   "private": true,
-  "description": "Documentation for Thine Code — multi-provider agentic coding CLI",
+  "description": "Documentation for Thine — agentic coding with any LLM provider",
   "scripts": {
     "dev": "mintlify dev",
-    "build": "mintlify build",
-    "broken-links": "mintlify broken-links"
+    "export": "mintlify export --output export.zip --disable-openapi",
+    "build": "npm run export",
+    "broken-links": "mintlify broken-links",
+    "deploy:stage": "bash scripts/deploy-cloud-run.sh"
   },
   "devDependencies": {
     "mintlify": "^4.2.25"

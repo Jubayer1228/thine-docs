@@ -1,0 +1,220 @@
+---
+title: Use Thine everywhere
+description: Install Thine in your terminal, VS Code, standalone IDE, or the web — same agent, any LLM backend.
+---
+
+# Code with Thine anywhere
+
+Powerful agentic coding in your **terminal**, **editor**, **standalone IDE**, or **browser**. Pick the surface that fits your workflow — all routes through **Thine Runtime** to your chosen backend.
+
+<Tabs>
+  <Tab title="Terminal" icon="terminal">
+    ## Terminal
+
+    <Badge color="blue">Original</Badge>
+
+    The full Thine agent in your shell — read files, edit code, run bash, use MCP, and ship from any repo.
+
+    ### Install
+
+    **One-liner (when `thine.ai` is live):**
+
+    ```bash
+    curl -fsSL https://thine.ai/install.sh | bash
+    ```
+
+    **Until then — release tarball (no git, repo stays private):**
+
+    Host `install.sh` and a release archive from `./scripts/package-release.sh` on any static URL (S3, R2, Vercel, internal CDN). End users run:
+
+    ```bash
+    curl -fsSL https://YOUR_CDN/install.sh | \
+      THINE_ARTIFACT_URL=https://YOUR_CDN/releases/thine-runtime-0.1.0.tar.gz bash
+    ```
+
+    **Private git (team with SSH access):**
+
+    ```bash
+    curl -fsSL https://YOUR_CDN/install.sh | \
+      THINE_REPO_URL=git@github.com:your-org/thine-runtime.git bash
+    ```
+
+    **From a local checkout (internal dev):**
+
+    ```bash
+    cd thine-runtime
+    ./scripts/install.sh
+    ```
+
+    ### Set your API key
+
+    ```bash
+    export GEMINI_API_KEY=your-key
+    # or: export OPENAI_API_KEY=your-key
+    ```
+
+    ### Verify & run
+
+    ```bash
+    thine doctor
+    cd your-project
+    thine -p "Read README.md and summarize this repo" --dangerously-skip-permissions
+    ```
+
+    **Interactive REPL:**
+
+    ```bash
+    thine
+    ```
+
+    See [CLI reference](/en/cli-reference) for all flags.
+  </Tab>
+
+  <Tab title="VS Code extension" icon="puzzle-piece">
+    ## VS Code extension
+
+    <Badge color="green">New</Badge>
+
+    Thine agent composer inside **VS Code**, **Cursor**, or **Windsurf** — same tools and middleware, native editor integration.
+
+    ### Prerequisites
+
+    1. Install [Thine Runtime](/en/quickstart) (`thine doctor` should pass)
+    2. Clone [Thine IDE](https://github.com/thine-ai/thine-code) (extension source)
+
+    ### Install the extension
+
+    ```bash
+    git clone https://github.com/thine-ai/thine-code.git
+    cd thine-code/packages/thine-agent
+    npm install
+    npm run compile
+    npm run package
+    code --install-extension thine-agent-0.1.0.vsix
+    ```
+
+    Or open the folder in VS Code and press **F5** for extension development host.
+
+    ### Connect to Thine Runtime
+
+    The extension talks to `http://127.0.0.1:8787` by default. Start runtime if needed:
+
+    ```bash
+    thine-runtime start
+    ```
+
+    Open the **Thine** side panel in VS Code and start a task from the composer.
+
+    ### Works in
+
+    - VS Code
+    - Cursor
+    - Windsurf
+    - Any VS Code–compatible editor
+  </Tab>
+
+  <Tab title="Standalone IDE" icon="code">
+    ## Standalone IDE
+
+    <Badge color="purple">Thine IDE</Badge>
+
+    A dedicated editor with the Thine agent built in — Cursor-style layout without configuring extensions.
+
+    ### Prerequisites
+
+    - Thine Runtime installed (`thine doctor`)
+    - [Thine IDE](https://github.com/thine-ai/thine-code) cloned as a sibling (default: `../Thine-code`)
+
+    ### Launch
+
+    ```bash
+    thine-runtime ide doctor    # verify paths + extension
+    thine-runtime ide .         # open current folder
+    thine-runtime ide ~/my-app  # open any project
+    ```
+
+    Alias: `thine-runtime-ide`
+
+    ### What you get
+
+    - Thine agent composer panel
+    - Inline diffs and tool loop
+    - Thine Runtime proxy → Gemini / OpenAI / Ollama
+    - Isolated user data at `~/.thine-runtime-ide`
+
+    Configure paths in `~/.config/thine-runtime/config.json` under `ide`.
+  </Tab>
+
+  <Tab title="Web" icon="globe">
+    ## Web
+
+    <Badge color="orange">Preview</Badge>
+
+    Run Thine tasks from the browser — agent studio, session history, and team telemetry. Think **lovable.dev-style** in-app building, powered by Thine Runtime.
+
+    ### Thine dashboard (available now)
+
+    Session-grouped logs, token breakdown, middleware notes, and cost analytics:
+
+    ```
+    http://127.0.0.1:8787/__thine
+    ```
+
+    Requires Postgres telemetry in config. See [Dashboard](/en/runtime/dashboard).
+
+    ### Thine Web studio (coming soon)
+
+    Browser-based agent workspace:
+
+    - Start tasks from a prompt (no local CLI required)
+    - Live tool loop and file previews
+    - Share sessions with your team
+    - Connect GitHub repos in one click
+
+    <Info>
+      **Early access:** Thine Web is in active development. Use **Terminal** or **IDE** today; dashboard telemetry is available now at `/__thine`.
+    </Info>
+
+    ### Self-hosted web UI
+
+    For now, run Thine Runtime locally and open the dashboard:
+
+    ```bash
+    thine-runtime start
+    open http://127.0.0.1:8787/__thine
+    ```
+  </Tab>
+</Tabs>
+
+## Compare surfaces
+
+| Surface | Best for | Install |
+| --- | --- | --- |
+| **Terminal** | Scripts, CI, power users, SSH | `curl …/install.sh \| bash` |
+| **VS Code extension** | Daily coding in your existing editor | `.vsix` from Thine IDE repo |
+| **Standalone IDE** | Dedicated agent-first editor | `thine-runtime ide` |
+| **Web** | Browser tasks, team visibility | `/__thine` dashboard (studio soon) |
+
+## All surfaces share
+
+- Same **Thine agent** loop (Read, Edit, Bash, MCP, Agent, skills)
+- Same **Thine Runtime** gateway and middleware
+- Same **provider keys** (Gemini, OpenAI, Ollama, …)
+- Same **telemetry** and session model
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Quickstart" icon="rocket" href="/en/quickstart">
+    First task in under 5 minutes.
+  </Card>
+  <Card title="Providers" icon="server" href="/en/providers">
+    Gemini, OpenAI, Ollama backends.
+  </Card>
+  <Card title="Configuration" icon="sliders" href="/en/runtime/configuration">
+  IDE paths, model aliases, telemetry.
+  </Card>
+  <Card title="How it works" icon="diagram-project" href="/en/how-it-works">
+    Architecture and agent loop.
+  </Card>
+</CardGroup>

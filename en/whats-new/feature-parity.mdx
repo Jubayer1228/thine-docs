@@ -1,75 +1,68 @@
 ---
-title: Feature parity
-description: Thine Code vs Claude Code feature audit — working, partial, and cloud-only items.
+title: Thine capabilities
+description: Full Thine feature set — agent tools, middleware, multi-provider backends, and dashboard.
 ---
 
-This page summarizes parity between **Thine Code** and official [Claude Code](https://code.claude.com/docs/en/whats-new) (weeks 13–26). Regenerate from the repo:
+Thine ships a complete agentic coding stack: the **Thine agent** (tools, MCP, hooks, skills), **Thine Runtime** (gateway + middleware), and the **Thine dashboard** (telemetry).
 
-```bash
-cd thine-code/claude && bun scripts/audit-whats-new.ts --json
-```
+## Summary
 
-## Summary (last audit)
-
-| Status | Count | Meaning |
+| Category | Status | Notes |
 | --- | --- | --- |
-| **Working** | 20 | Implemented and usable with universal LLMs |
-| **Partial** | 16 | Present but gated, stubbed, or REPL-only |
-| **Missing** | 0 | Not in fork |
-| **Cloud-only** | 3 | Requires Anthropic infrastructure |
+| **Agent loop + tools** | Yes | Read, Edit, Bash, Grep, Agent, MCP |
+| **MCP, skills, hooks, plugins** | Yes | Full extensibility |
+| **Subagents, `/goal`, `/review`** | Yes | Parallel and goal-driven work |
+| **Multi-provider backend** | Yes | Gemini, OpenAI, Ollama via gateway |
+| **Thine middleware** | Yes | Cache, repo graph, tool pruning, escalation |
+| **Thine dashboard** | Yes | `/__thine` with Postgres |
+| **Thine IDE** | Yes | `thine-runtime ide` |
+| **Cloud artifacts / routines** | No | Vendor cloud only |
 
-## Working on Gemini / universal providers
+## Core Thine features
 
 | Feature | Notes |
 | --- | --- |
-| `mcp login` / `logout` | CLI OAuth for HTTP/SSE MCP |
-| Shell mode (`! cmd`) | Bash mode via `!` prefix |
-| `/rewind` after `/clear` | Parent session preserved |
-| `/cd` | Mid-session cwd change |
-| `/goal` | Completion condition + auto-continue |
-| `/code-review` | Alias for `/review` |
-| `/config`, `/usage`, `/loop` | Settings and token UI |
-| `--safe-mode`, `--fallback-model` | CLI flags |
-| `--plugin-dir`, `--plugin-url` | Zip and URL plugins |
-| `project purge`, `agents --json` | Extended CLI |
-| Multi-provider presets | `llmPresets.ts` |
-| PowerShell tool | Windows native shell |
-| Tool(param:value) permissions | Pattern-based rules |
+| `thine` REPL + `-p` print mode | Primary CLI entry point |
+| `thine doctor` | Health, backend, middleware routes |
+| `thine index` | Workspace symbol index for repo graph |
+| `mcp login` / `logout` | OAuth for HTTP/SSE MCP |
+| `/goal`, `/review`, `/config` | Slash commands in REPL |
+| `--no-middleware` | Gateway passthrough |
+| Model aliases | `claude-sonnet-4-6` → your backend model |
+| Auto model escalation | Middleware on knowledge-read tasks |
+| Session telemetry | Per-turn tokens, tools, middleware notes |
 
-## Partial / gated
+## Thine middleware
 
-| Feature | How to enable or workaround |
+| Flag | Effect |
+| --- | --- |
+| `instructionCache` | Fingerprint system+tools for cache tracking |
+| `repositoryGraph` | Inject symbols from `.thine/index/` |
+| `toolPruning` | Send task-relevant tools only |
+| `persistentMemory` | Inject `.thine/memory/MEMORY.md` |
+| `kvCache` | Provider prefix caching |
+| `toolResultCompaction` | Compact old tool results |
+
+See [Middleware](/en/runtime/middleware).
+
+## Optional features
+
+| Feature | Notes |
 | --- | --- |
 | Auto mode classifier | `CLAUDE_CODE_TRANSCRIPT_CLASSIFIER=1` |
-| Sub-agents spawn sub-agents | `FORK_SUBAGENT` off in external builds |
-| Monitor tool | `MONITOR_TOOL` off by default |
-| Computer use / web browser | `CHICAGO_MCP`, `WEB_BROWSER_TOOL` off |
-| Ultraplan | Gated off in external build |
-| `/ultrareview` | Local review on Gemini; cloud fleet is Anthropic-only |
-| `claude ultrareview` CLI | Stub — use `/ultrareview` or `-p` review |
-| Fast mode | Anthropic billing model |
+| Background agents (`--bg`) | Requires tmux |
+| Computer use / web browser | MCP-dependent |
+| `/ultrareview` | Local review; cloud fleet not included |
 
-## Cloud-only (not in Thine)
-
-| Feature | Reason |
-| --- | --- |
-| Artifacts (claude.ai share) | Anthropic cloud |
-| Opus 4.7/4.8 defaults, Routines | Anthropic models + cloud |
-| Cloud ultrareview fleet | Anthropic infrastructure |
-
-## Live Gemini probes
-
-Verify end-to-end with your API key:
+## Verify your setup
 
 ```bash
-GEMINI_API_KEY=... bun scripts/audit-whats-new.ts --live
-node dist/cli.mjs -p "Reply with exactly: WHATS_NEW_OK"
+thine doctor
+thine -p "Reply with exactly: THINE_OK" --dangerously-skip-permissions
+curl -s http://127.0.0.1:8787/health | jq .
 ```
 
-## Contributing parity
+## See also
 
-When upstream ships a new [weekly digest](https://code.claude.com/docs/en/whats-new):
-
-1. Add a row to `scripts/audit-whats-new.ts`
-2. Implement portable features in `thine-code/claude/`
-3. Update this page and `en/whats-new.mdx`
+- [Overview](/en/overview)
+- [What's new](/en/whats-new)

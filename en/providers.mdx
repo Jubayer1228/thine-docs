@@ -1,11 +1,111 @@
 ---
 title: LLM providers
-description: Configure Gemini, OpenAI, DeepSeek, Qwen, Kimi, GLM, Ollama, or any OpenAI-compatible API for Thine Code.
+description: Configure Gemini, OpenAI, Ollama, and other backends for Thine Runtime.
 ---
 
-Thine Code routes the Claude Code agent loop through a **universal LLM adapter**. The same tools, skills, and session model work regardless of which provider you choose.
+Thine Runtime routes Thine through a **configurable backend** in `~/.config/thine-runtime/config.json`. Set your provider API key in the environment — keys are not stored in config.
 
-## Provider table
+## Runtime backend types
+
+| `backend.type` | API key env | Example `defaultModel` |
+| --- | --- | --- |
+| `gemini` | `GEMINI_API_KEY` | `gemini-2.5-flash` |
+| `openai-compatible` | `OPENAI_API_KEY` | `gpt-4o-mini` |
+| `openai-responses` | `OPENAI_API_KEY` | `gpt-5.1-codex-mini` |
+| `ollama` | (none) | `llama3.2` |
+| `anthropic-forward` | `ANTHROPIC_API_KEY` | `claude-sonnet-4-6` |
+
+Example configs: `config/` in your Thine Runtime install directory.
+
+Install with the right profile:
+
+```bash
+./scripts/install.sh                  # Gemini
+./scripts/install.sh --backend codex  # OpenAI Codex mini
+```
+
+## Gemini
+
+```json
+{
+  "defaultModel": "gemini-2.5-flash",
+  "backend": {
+    "type": "gemini",
+    "baseUrl": "https://generativelanguage.googleapis.com/v1beta/openai"
+  }
+}
+```
+
+```bash
+export GEMINI_API_KEY=your-key
+```
+
+## OpenAI / Codex
+
+```json
+{
+  "defaultModel": "gpt-5.1-codex-mini",
+  "backend": {
+    "type": "openai-responses",
+    "baseUrl": "https://api.openai.com/v1"
+  }
+}
+```
+
+```bash
+export OPENAI_API_KEY=your-key
+```
+
+## Ollama (native passthrough)
+
+```json
+{
+  "defaultModel": "llama3.2",
+  "backend": {
+    "type": "ollama",
+    "baseUrl": "http://127.0.0.1:11434"
+  }
+}
+```
+
+Ollama speaks Anthropic natively — no translation layer.
+
+## OpenAI-compatible gateways
+
+Point at LiteLLM, vLLM, or an internal gateway:
+
+```json
+{
+  "defaultModel": "your-model",
+  "backend": {
+    "type": "openai-compatible",
+    "baseUrl": "https://your-gateway/v1"
+  }
+}
+```
+
+## Model aliases
+
+Thine sends names like `claude-sonnet-4-6`. Map them in config:
+
+```json
+"claudeCode": {
+  "modelAliases": {
+    "claude-sonnet-4-6": "gpt-4o",
+    "claude-haiku-4-20250514": "gpt-4o-mini"
+  }
+}
+```
+
+See [Configuration](/en/runtime/configuration).
+
+---
+
+## Legacy: legacy Thine fork providers
+
+The [legacy Thine fork](https://github.com/thine-ai/thine-code) uses env-var provider selection inside the modified CLI. Prefer the runtime gateway path above for new projects.
+
+### Fork provider table
 
 | Provider | Select | API key env | Default model | Base URL |
 | --- | --- | --- | --- | --- |
@@ -30,7 +130,7 @@ export CLAUDE_CODE_LLM_MODEL=gemini-2.5-pro
 export ANTHROPIC_MODEL=gpt-4o   # remapped to your universal model
 ```
 
-Claude aliases (`sonnet`, `opus`, `haiku`, `claude-*`) are **remapped** to your configured universal model so upstream skills and commands keep working.
+Thine model aliases (`sonnet`, `opus`, `haiku`, `claude-*`) are **remapped** to your configured backend model so skills and commands keep working.
 
 ## Gemini quick start
 

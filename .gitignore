@@ -1,4 +1,4 @@
 node_modules/
 .mintlify/
 .DS_Store
-*.log
+export.zip

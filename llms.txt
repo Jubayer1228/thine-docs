@@ -1,25 +1,31 @@
-# Thine Code Docs
+# Thine Docs
 
-> Official documentation for Thine Code — agentic coding with Gemini, OpenAI, DeepSeek, and other LLM providers. Fork of Claude Code with multi-provider routing, API-key auth, and Agent SDK.
+> Official documentation for Thine — agentic coding with any LLM provider. Thine Runtime gateway, middleware, telemetry dashboard, and Thine IDE.
 
-## Docs
+## Getting started
 
-- [Overview](en/overview.mdx): What Thine Code is and how it relates to Claude Code
-- [Quickstart](en/quickstart.mdx): Install, configure a provider, run your first task
-- [LLM providers](en/providers.mdx): Gemini, OpenAI, DeepSeek, Qwen, Kimi, GLM, Ollama
-- [CLI reference](en/cli-reference.mdx): Commands and flags
-- [Environment variables](en/env-vars.mdx): Provider and behavior env vars
-- [Agent SDK overview](en/agent-sdk/overview.mdx): query(), sessions, subprocess runtime
-- [What's new](en/whats-new.mdx): Parity with Claude Code weekly releases
-- [Feature parity](en/whats-new/feature-parity.mdx): Audit matrix vs upstream
-- [/goal command](en/goal.mdx): Completion conditions and auto-continue
-- [MCP](en/mcp.mdx): Model Context Protocol integration
-- [Plugins](en/plugins.mdx): --plugin-dir, --plugin-url, zip archives
-- [Prompt caching](en/prompt-caching.mdx): Universal provider caching
-- [Troubleshooting](en/troubleshooting.mdx): Common fixes
+- [Overview](en/overview.mdx): What Thine is and how to get started
+- [Use Thine everywhere](en/platforms.mdx): Terminal, VS Code, IDE, Web
+- [How it works](en/how-it-works.mdx): Stack and agent loop
 
-## Upstream reference
+## Thine Runtime
 
-Claude Code documentation: https://code.claude.com/docs/en/overview
+- [Gateway](en/runtime/gateway.mdx): API surface, env vars, backend types
+- [Configuration](en/runtime/configuration.mdx): config.json, model aliases, telemetry
+- [Middleware](en/runtime/middleware.mdx): Token-efficient gateway hooks
+- [Dashboard](en/runtime/dashboard.mdx): /__thine telemetry and session logs
 
-Fetch the complete upstream index at: https://code.claude.com/docs/llms.txt
+## Reference
+
+- [LLM providers](en/providers.mdx): Gemini, OpenAI, Ollama, openai-responses
+- [CLI reference](en/cli-reference.mdx): thine, thine-runtime, flags
+- [Environment variables](en/env-vars.mdx): Gateway and provider env vars
+- [Thine capabilities](en/whats-new/feature-parity.mdx): Feature matrix
+
+## Build with Thine
+
+- [MCP](en/mcp.mdx): Model Context Protocol
+- [Skills](en/skills.mdx): Repeatable workflows
+- [Hooks](en/hooks-guide.mdx): Shell hooks before/after actions
+- [Memory](en/memory.mdx): THINE.md project instructions
+- [Thine Agent SDK](en/agent-sdk/overview.mdx): query() API for automation
