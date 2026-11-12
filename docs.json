@@ -15,6 +15,10 @@
   "navbar": {
     "links": [
       {
+        "label": "Download Mac",
+        "href": "https://storage.googleapis.com/robinailabs-dist/desktop/stable/Thine-darwin-x64.zip"
+      },
+      {
         "label": "thine.ai",
         "href": "https://thine.ai"
       }

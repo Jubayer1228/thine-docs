@@ -7,6 +7,18 @@ description: Install Thine in your terminal, VS Code, standalone IDE, or the web
 
 Powerful agentic coding in your **terminal**, **editor**, **standalone IDE**, or **browser**. Pick the surface that fits your workflow — all routes through **Thine Runtime** to your chosen backend.
 
+## Download Thine-code for macOS
+
+<a href="https://storage.googleapis.com/robinailabs-dist/desktop/stable/Thine-darwin-x64.zip">
+  <Button>Download for Mac (.zip)</Button>
+</a>
+
+- **File:** [Thine-darwin-x64.zip](https://storage.googleapis.com/robinailabs-dist/desktop/stable/Thine-darwin-x64.zip) (~243 MB)
+- **Checksum:** [sha256](https://storage.googleapis.com/robinailabs-dist/desktop/stable/Thine-darwin-x64.zip.sha256)
+- **Manifest:** [latest-darwin-x64.json](https://storage.googleapis.com/robinailabs-dist/desktop/stable/latest-darwin-x64.json)
+
+After download: unzip → `xattr -dr com.apple.quarantine Thine-code.app` → open the app (Right-click → Open if Gatekeeper warns). Unsigned smoke build; Apple Silicon uses Rosetta until arm64 ships.
+
 <Tabs>
   <Tab title="Terminal" icon="terminal">
     ## Terminal
@@ -117,12 +129,37 @@ Powerful agentic coding in your **terminal**, **editor**, **standalone IDE**, or
 
     A dedicated editor with the Thine agent built in — Cursor-style layout without configuring extensions.
 
-    ### Prerequisites
+    ### Download for Mac (unsigned smoke build)
+
+    Latest packaged `Thine-code.app` (Intel / Rosetta on Apple Silicon):
+
+    <Card title="Download Thine-code for Mac" icon="apple" href="https://storage.googleapis.com/robinailabs-dist/desktop/stable/Thine-darwin-x64.zip">
+      Thine-darwin-x64.zip — open the app, then Right-click → Open if Gatekeeper warns (unsigned).
+    </Card>
+
+    ```bash
+    # Optional: verify checksum
+    curl -fsSL https://storage.googleapis.com/robinailabs-dist/desktop/stable/Thine-darwin-x64.zip.sha256
+    curl -fsSL -o Thine-darwin-x64.zip \
+      https://storage.googleapis.com/robinailabs-dist/desktop/stable/Thine-darwin-x64.zip
+    shasum -a 256 -c <<< "$(curl -fsSL https://storage.googleapis.com/robinailabs-dist/desktop/stable/Thine-darwin-x64.zip.sha256 | awk '{print $1}')  Thine-darwin-x64.zip"
+    unzip Thine-darwin-x64.zip
+    xattr -dr com.apple.quarantine Thine-code.app
+    open Thine-code.app
+    ```
+
+    Manifest: [latest-darwin-x64.json](https://storage.googleapis.com/robinailabs-dist/desktop/stable/latest-darwin-x64.json)
+
+    <Warning>
+      This build is **unsigned / not notarized**. Use for internal testing only. Apple Silicon Macs run it via Rosetta until an arm64 build is published.
+    </Warning>
+
+    ### Prerequisites (dev launch from source)
 
     - Thine Runtime installed (`thine doctor`)
     - [Thine IDE](https://github.com/thine-ai/thine-code) cloned as a sibling (default: `../Thine-code`)
 
-    ### Launch
+    ### Launch from source
 
     ```bash
     thine-runtime ide doctor    # verify paths + extension
@@ -189,7 +226,7 @@ Powerful agentic coding in your **terminal**, **editor**, **standalone IDE**, or
 | --- | --- | --- |
 | **Terminal** | Scripts, CI, power users, SSH | `curl …/install.sh \| bash` |
 | **VS Code extension** | Daily coding in your existing editor | `.vsix` from Thine IDE repo |
-| **Standalone IDE** | Dedicated agent-first editor | `thine-runtime ide` |
+| **Standalone IDE** | Dedicated agent-first editor | [Mac zip](https://storage.googleapis.com/robinailabs-dist/desktop/stable/Thine-darwin-x64.zip) or `thine-runtime ide` |
 | **Web** | Browser tasks, team visibility | `/__thine` dashboard (studio soon) |
 
 ## All surfaces share
