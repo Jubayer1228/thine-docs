@@ -3,8 +3,8 @@
   "thineCodeRef": "73c8aae",
   "thineAgentVersion": "0.1.0",
   "stageService": "thine-docs-stage",
-  "cloudRunRevision": "thine-docs-stage-00006-gkn",
-  "deployedAt": "2026-11-13T18:15:00.000Z",
+  "cloudRunRevision": "thine-docs-stage-00007-qq4",
+  "deployedAt": "2026-11-14T03:45:11.869Z",
   "notes": "Skills loader parity, anthropic skills sync, test:features verification.",
   "desktop": {
     "channel": "stable",
@@ -16,7 +16,7 @@
     "sha256": "5e42cbe4eeed88241b78e82993d2dc9c73b198ee67d3edc044cc3f1ae39a020b",
     "unsigned": true,
     "manifestUrl": "https://storage.googleapis.com/robinailabs-dist/desktop/stable/latest-darwin-x64.json",
-    "notes": "Includes create-in-place workspace fix (ca84512+). Unsigned — Right-click → Open on first launch."
+    "notes": "Includes create-in-place workspace fix (ca84512+). Unsigned \u2014 Right-click \u2192 Open on first launch."
   },
   "downloaderSyncedAt": "2026-11-14T03:44:08.284Z"
 }
