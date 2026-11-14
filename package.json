@@ -7,7 +7,8 @@
     "export": "mintlify export --output export.zip --disable-openapi",
     "build": "npm run export",
     "broken-links": "mintlify broken-links",
-    "deploy:stage": "bash scripts/deploy-cloud-run.sh"
+    "deploy:stage": "bash scripts/deploy-cloud-run.sh",
+    "sync:downloader": "node scripts/sync-downloader.mjs"
   },
   "devDependencies": {
     "mintlify": "^4.2.25"

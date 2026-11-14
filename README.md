@@ -27,6 +27,16 @@ thine-docs/
 └── logo/
 ```
 
+## Download metadata (`DOC_RELEASE.json`)
+
+Mac desktop zip version pins live in **`DOC_RELEASE.json`**. Refresh from the public GCS manifest after each desktop upload:
+
+```bash
+THINE_CODE_ROOT=../Thine-code npm run sync:downloader
+```
+
+Then commit the updated `DOC_RELEASE.json` + pinned MDX lines and `npm run deploy:stage`.
+
 ## Deploy
 
 ### Cloud Run (stage)

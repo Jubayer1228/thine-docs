@@ -3,6 +3,11 @@ title: Thine Agent SDK overview
 description: Build production AI agents with Thine Agent SDK — query(), sessions, and subprocess runtime through Thine Runtime.
 ---
 
+<Note>
+  **Docs release:** `2026-11-13` · **thine-agent:** `0.1.0` · **Thine-code:** `73c8aae` · **Mac zip build:** `ca84512`  
+  Source pin: `DOC_RELEASE.json` in the [thine-docs](https://github.com/thine-ai/thine-docs) repo. Redeploy with `./scripts/deploy-cloud-run.sh` to refresh [stage](https://thine-docs-stage-2svmvg356a-uc.a.run.app/en/agent-sdk/overview).
+</Note>
+
 The Thine Agent SDK exposes the same agent loop as the `thine` CLI through a programmatic API. In the Thine stack, the **Thine IDE** and `thine-agent` extension use the SDK → Thine Runtime → your backend.
 
 ## Thine IDE path (recommended)
@@ -53,8 +58,8 @@ Set provider env vars before running (`GEMINI_API_KEY`, etc.) — see [Providers
   <Card title="Sessions" icon="folder" href="/en/agent-sdk/sessions">
     Resume, fork, and persist conversations by session ID.
   </Card>
-  <Card title="Thine features" icon="puzzle-piece" href="/en/memory">
-    THINE.md, skills, hooks, MCP — loaded when enabled.
+  <Card title="Thine features" icon="puzzle-piece" href="/en/skills">
+    THINE.md, skills (Cursor-compatible paths), hooks, MCP — loaded when enabled.
   </Card>
   <Card title="Multi-provider" icon="server" href="/en/providers">
     Gemini, OpenAI, Ollama via Thine Runtime.

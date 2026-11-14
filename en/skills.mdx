@@ -1,10 +1,21 @@
 ---
 title: Skills
-description: Extend Thine with reusable slash-command workflows.
+description: Extend Thine with reusable slash-command workflows (Cursor-compatible SKILL.md).
 ---
 
-Skills are packaged prompts invoked as `/skill-name`. Thine ships bundled skills (`/loop`, `/review`, etc.) and loads project skills from `.claude/skills/`.
+Skills are packaged prompts invoked as `/skill-name` or auto-applied when relevant. Thine ships bundled skills and merges project, user, and vendor skill trees (same idea as [Cursor Agent Skills](https://cursor.com/docs/skills)).
 
+## Skill locations
+
+| Scope | Paths (first match wins for duplicate names) |
+| --- | --- |
+| Project | `.thine/skills/`, `.cursor/skills/`, `.agents/skills/` |
+| User | `~/.cursor/skills/`, `~/.agents/skills/` |
+| Vendor (Thine IDE repo) | `vendor/anthropics-skills/` after `npm run setup:anthropic` |
+
+Duplicate skill **names** are deduped with **`.thine/skills` highest priority**, then project Cursor paths, then plugins/vendor.
+
+Legacy Claude Code paths (`.claude/skills/`) still work when present.
 
 ## Invoke a skill
 
@@ -13,9 +24,11 @@ Skills are packaged prompts invoked as `/skill-name`. Thine ships bundled skills
 /bugfix-workflow
 ```
 
+The agent can also call `read_skill` when a skill is relevant without you typing the slash command.
+
 ## Create a skill
 
-Add `SKILL.md` or a skill folder under `.claude/skills/`:
+Add `SKILL.md` (YAML frontmatter + body) under `.thine/skills/<skill-id>/` or `.cursor/skills/<skill-id>/`:
 
 ```markdown
 ---
@@ -24,6 +37,28 @@ description: Deploy to staging and verify health
 ---
 
 When invoked, run the staging deploy script and curl the health endpoint.
+```
+
+Multiline descriptions (`description: >-`) are supported.
+
+## Anthropic / official skills (Thine IDE repo)
+
+From a Thine-code checkout:
+
+```bash
+npm run setup:anthropic-skills   # vendor pull + sync into tree + integration tests
+# or
+npm run sync:anthropic-skills    # sync only (requires vendor/anthropics-skills)
+```
+
+See `AGENTS.md` in Thine-code for bundled security and integration skills.
+
+## Verify skills loading
+
+```bash
+npm run test:features            # automated feature verification
+# or in packages/thine-agent:
+bunx vitest run src/skills/skillsLoader.integration.test.ts
 ```
 
 ## Disable skills
