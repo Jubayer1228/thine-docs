@@ -1,6 +1,6 @@
 # Thine Docs
 
-> Docs release 2026-11-13 · Thine-code 73c8aae · thine-agent 0.1.0 · Mac zip ca84512 (`DOC_RELEASE.json`)
+> Docs release 2026-11-13 · Thine-code 73c8aae · thine-agent 0.1.0 · Mac zip 73c8aae (`DOC_RELEASE.json`)
 
 > Official documentation for Thine — agentic coding with any LLM provider. Thine Runtime gateway, middleware, telemetry dashboard, and Thine IDE.
 
