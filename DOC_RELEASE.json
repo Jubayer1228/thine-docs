@@ -3,8 +3,8 @@
   "thineCodeRef": "73c8aae",
   "thineAgentVersion": "0.1.0",
   "stageService": "thine-docs-stage",
-  "cloudRunRevision": "thine-docs-stage-00007-qq4",
-  "deployedAt": "2026-11-14T03:45:11.869Z",
+  "cloudRunRevision": "thine-docs-stage-00008-ltj",
+  "deployedAt": "2026-11-14T04:11:04.476Z",
   "notes": "Mac desktop zip rebuilt at 73c8aae (analysis parity).",
   "desktop": {
     "channel": "stable",
